@@ -358,7 +358,16 @@
     // ── Render history items (or default suggestions when history is empty) ────
     function renderHistory(coordKey, inputEl) {
       var history = getHistory();
-      var places  = history.length ? history : _DEFAULT_PLACES;
+      // Top up with defaults (that aren't already in history) to reach 3 items
+      var places = history.slice();
+      if (places.length < 3) {
+        var historyNames = places.map(function (h) { return h.place_name; });
+        _DEFAULT_PLACES.forEach(function (d) {
+          if (places.length < 3 && historyNames.indexOf(d.place_name) === -1) {
+            places.push(d);
+          }
+        });
+      }
       list.innerHTML = '';
       places.forEach(function (h) {
         var parts     = h.place_name.split(',');
