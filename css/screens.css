@@ -82,6 +82,11 @@ body {
   display: none !important;
 }
 
+/* Lift Mapbox logo above the bottom sheet */
+.mapboxgl-ctrl-bottom-left {
+  bottom: 418px !important;
+}
+
 /* Address bar — floats over the map */
 .address-bar {
   position: absolute;
@@ -186,9 +191,20 @@ body {
   pointer-events: auto;
 }
 
-/* Category screen: bottom sheet occupies exactly half the phone frame */
+/* Category screen: bottom sheet slides up over the map */
 .screen--category .bottom-sheet {
-  height: 418px; /* 812px / 2 + 12px */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 418px;
+  z-index: 10;
+  transform: translateY(100%);
+  transition: transform 600ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.screen--category .bottom-sheet.is-entered {
+  transform: translateY(0);
 }
 
 /* Bottom sheet — white panel anchored to the bottom */
@@ -230,6 +246,12 @@ body {
 .bottom-sheet .order-sheet {
   position: relative;
   z-index: 1;
+  transform: translateY(100%);
+  transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.bottom-sheet.order-entered .order-sheet {
+  transform: translateY(0);
 }
 
 /* Order sheet inside bottom sheet — suppress its own shadow */

@@ -252,19 +252,14 @@
     var margin      = 16;
     var statusBar   = document.querySelector('.status-bar');
     var fab         = document.querySelector('.fab');
-    var mapArea     = document.querySelector('.map-area');
     var bottomSheet = document.querySelector('.bottom-sheet');
 
     var statusBarBottom = (statusBar ? statusBar.offsetHeight : 44) + 8;
     var fabBottom       = fab ? (fab.offsetTop + fab.offsetHeight) : 0;
     var top             = Math.max(statusBarBottom, fabBottom) + margin;
-    var bottom          = margin;
-
-    if (mapArea && bottomSheet) {
-      var overlap = mapArea.getBoundingClientRect().bottom
-                  - bottomSheet.getBoundingClientRect().top;
-      if (overlap > 0) bottom = overlap + margin;
-    }
+    // Use offsetHeight so the safe area always reserves the sheet's final
+    // resting height, regardless of its current transform/animation state.
+    var bottom          = (bottomSheet ? bottomSheet.offsetHeight : 0) + margin;
 
     return { top: top, bottom: bottom, left: margin, right: margin };
   }
@@ -448,11 +443,11 @@
     // Store for re-centre button
     _lastVisualBounds = visualBounds;
 
-    // Jump to pickup location, then animate to the final view.
-    // jumpTo + fitBounds are synchronous — browser renders only after this task,
-    // so the user sees a smooth zoom outward from the pickup point.
+    // Snap to pickup so the map is orientated before the entrance animation.
+    // Signal the page — it will call mapsRecentre() to start the animated
+    // fit in sync with the bottom-sheet slide-up.
     map.jumpTo({ center: originCoords, zoom: 15 });
-    map.fitBounds(visualBounds, { padding: sa, maxZoom: 15 });
+    document.dispatchEvent(new CustomEvent('mapRouteReady'));
   }
 
   // ─── Pin variant selection ────────────────────────────────────────────────────
@@ -604,9 +599,13 @@
     document.head.appendChild(script);
   }
 
-  window.mapsRecentre = function () {
+  window.mapsRecentre = function (duration) {
     if (map && _lastVisualBounds) {
-      map.fitBounds(_lastVisualBounds, { padding: _safeArea(), maxZoom: 15 });
+      map.fitBounds(_lastVisualBounds, {
+        padding: _safeArea(),
+        maxZoom: 15,
+        duration: typeof duration === 'number' ? duration : 300
+      });
     }
   };
 

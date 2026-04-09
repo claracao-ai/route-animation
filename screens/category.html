@@ -182,6 +182,53 @@
     setInterval(_tick, 10000);
   })();
   </script>
+  <script>
+  // Entrance coordinator — synchronises the bottom-sheet slide-up,
+  // the map zoom-out, and the staggered order-sheet reveal.
+  (function () {
+    var SHEET_MS   = 600;  // must match CSS transition on .bottom-sheet
+    var MAP_MS     = 1100; // map zoom-out duration (intentionally slower than sheet)
+    var ORDER_MS   = 420;  // must match CSS transition on .order-sheet
+    var MAX_WAIT   = 500;  // max ms to wait for route before starting anyway
+
+    var sheet         = document.querySelector('.bottom-sheet');
+    var routeReady    = false;
+    var entranceStart = null;
+
+    function startEntrance() {
+      if (entranceStart) return;
+      entranceStart = Date.now();
+
+      // 1. Sheet slides up
+      sheet.classList.add('is-entered');
+
+      // 2. Map zooms out (if route loaded; otherwise fires from listener)
+      if (routeReady && window.mapsRecentre) window.mapsRecentre(MAP_MS);
+
+      // 3. Order sheet starts early enough to finish with the map zoom
+      setTimeout(function () {
+        sheet.classList.add('order-entered');
+      }, MAP_MS - ORDER_MS);
+    }
+
+    // Route loaded → start entrance immediately (or trigger map zoom if already started)
+    document.addEventListener('mapRouteReady', function () {
+      routeReady = true;
+      if (entranceStart) {
+        // Entrance already running — fire map zoom with whatever time is left
+        var remaining = Math.max(200, MAP_MS - (Date.now() - entranceStart));
+        if (window.mapsRecentre) window.mapsRecentre(remaining);
+      } else {
+        startEntrance();
+      }
+    });
+
+    // Fallback: start after MAX_WAIT even if the route is still loading
+    setTimeout(function () {
+      if (!entranceStart) startEntrance();
+    }, MAX_WAIT);
+  })();
+  </script>
   <script src="../js/config.js"></script>
   <script>
     // Read route from home screen; fall back to demo values
