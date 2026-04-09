@@ -1,0 +1,35 @@
+<!-- Order Sheet Component (Bottom Panel) -->
+<!-- Shows payment method + primary CTA + schedule icon button -->
+<!-- Usage: place at the bottom of a screen; asset paths relative to /screens/ -->
+<!-- Customise: swap card number, button label, or add a badge to schedule button -->
+
+<div class="order-sheet">
+  <div class="order-sheet__content">
+
+    <!-- Payment method row -->
+    <div class="order-sheet__payment">
+      <div class="order-sheet__payment-group">
+
+        <img class="order-sheet__card-icon" src="../assets/images/Master_Card.png" alt="Mastercard" width="32" height="20" />
+
+        <div class="order-sheet__payment-text">
+          <div class="order-sheet__payment-line">
+            <span class="order-sheet__card-number">•••• 5698</span>
+            <img class="order-sheet__chevron" src="../assets/images/chevron_down.png" alt="Change payment method" width="16" height="16" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="order-sheet__buttons">
+      <button class="order-sheet__select-btn" type="button">Select Bolt</button>
+
+      <!-- Schedule button with clock icon -->
+      <button class="order-sheet__schedule-btn" type="button" aria-label="Schedule ride">
+        <img src="../assets/images/scheduling.png" alt="" aria-hidden="true" />
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<!-- Address Bar Component -->
+<!-- Floating pill over the map showing origin → destination route -->
+<!-- Usage: place inside .map-area as a direct child -->
+<!-- Asset paths are relative to /screens/ -->
+
+<div class="address-bar" role="button" aria-label="Edit route">
+  <button class="address-bar__icon-btn" aria-label="Close" onclick="window.location.href='destination.html'">
+    <img src="../assets/images/close.png" alt="" aria-hidden="true" />
+  </button>
+
+  <div class="address-bar__route">
+    <span class="address-bar__origin">Vana-Lõuna 15</span>
+    <img class="address-bar__arrow" src="../assets/images/arrow_micro_right.png" alt="" aria-hidden="true" />
+    <span class="address-bar__destination">Gonsiori 125</span>
+  </div>
+
+  <button class="address-bar__icon-btn" aria-label="Add stop">
+    <img src="../assets/images/add.png" alt="" aria-hidden="true" />
+  </button>
+</div>

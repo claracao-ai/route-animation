@@ -1,0 +1,230 @@
+/* Load Inter Variable from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Design Tokens */
+:root {
+  /* ─── Figma Design System Colour Tokens (Global • Tokens, Default Mode) ─── */
+  /* Source: figma.com/design/HLzocPH7cQwlY9xaEWDOa1 node 333:2082            */
+  /* 8-digit hex = #RRGGBBAA (CSS Color Level 4, all modern browsers)          */
+
+  /* Layer */
+  --layer-floor-0:             #ffffff;
+  --layer-floor-0-grouped:     #eef1f0;
+  --layer-floor-1:             #ffffff;
+  --layer-floor-2:             #ffffff;
+  --layer-floor-3:             #ffffff;
+  --layer-surface:             #002d1e12;
+  --layer-surface-inner-shadow:#ffffff;
+
+  /* Content */
+  --content-primary:           #191f1c;
+  --content-secondary:         #000a07a1;
+  --content-tertiary:          #00110b78;
+  --content-action-primary:    #007042eb;
+  --content-action-secondary:  #006e37d4;
+  --content-danger-primary:    #ad000ef0;
+  --content-danger-secondary:  #da0012e5;
+  --content-warning-primary:   #9e5b00;
+  --content-warning-secondary: #9e5b00;
+  --content-positive-primary:  #007042eb;
+  --content-positive-secondary:#006e37d4;
+  --content-promo-primary:     #3804d7f0;
+  --content-promo-secondary:   #0014eda6;
+  --content-link-primary:      #007042eb;
+  --content-link-secondary:    #006e37d4;
+  --content-primary-inverted:  #fdfffeed;
+
+  /* Background */
+  --bg-neutral-primary:        #0e1010;
+  --bg-neutral-secondary:      #002d1e12;
+  --bg-neutral-secondary-hard: #00140d29;
+  --bg-action-primary:         #2b8659;
+  --bg-action-secondary:       #00a04017;
+  --bg-danger-primary:         #de1929;
+  --bg-danger-secondary:       #ff000014;
+  --bg-warning-primary:        #ffb200;
+  --bg-warning-secondary:      #ffbe003b;
+  --bg-positive-primary:       #2b8659;
+  --bg-positive-secondary:     #00a04017;
+  --bg-promo-primary:          #5966f3;
+  --bg-promo-secondary:        #003cff12;
+
+  /* Background Active (pressed states) */
+  --bg-active-neutral-primary:        #161a18;
+  --bg-active-neutral-secondary:      #001f1821;
+  --bg-active-neutral-secondary-hard: #000f0b47;
+  --bg-active-action-primary:         #18784c;
+  --bg-active-action-secondary:       #00903838;
+  --bg-active-danger-primary:         #ce0019;
+  --bg-active-danger-secondary:       #ff000033;
+  --bg-active-warning-primary:        #ffa100;
+  --bg-active-warning-secondary:      #ffad0070;
+  --bg-active-positive-primary:       #18784c;
+  --bg-active-positive-secondary:     #00903838;
+  --bg-active-promo-primary:          #4f5bda;
+  --bg-active-promo-secondary:        #003aff2b;
+
+  /* Special */
+  --special-bg-disabled:       #002d1e12;
+  --special-bg-zebra:          #00402008;
+  --special-nulled:            #00000000;
+  --special-scrim:             #00000047;
+
+  /* Border */
+  --border-neutral-primary:    #00110b78;
+  --border-neutral-secondary:  #00140d29;
+  --border-separator:          #002d1e12;
+  --border-action-primary:     #2b8659;
+  --border-action-secondary:   #0185344a;
+  --border-danger-primary:     #de1929;
+  --border-danger-secondary:   #ff000442;
+  --border-warning-primary:    #ffb200;
+  --border-warning-secondary:  #ffa4008c;
+  --border-positive-primary:   #2b8659;
+  --border-positive-secondary: #0185344a;
+  --border-promo-primary:      #5966f3;
+  --border-promo-secondary:    #0037ff3d;
+
+  /* Content Active */
+  --content-active-link-primary: #081f14;
+
+  /* Border Active */
+  --border-active-neutral-secondary: #000f0b47;
+  --border-active-action-primary:    #18784c;
+  --border-active-danger-primary:    #ce0019;
+
+  /* Static Content (theme-invariant) */
+  --static-content-key-light:     #ffffff;
+  --static-content-primary-light: #eceeed;
+  --static-content-key-dark:      #000000;
+  --static-content-primary-dark:  #191f1c;
+  --static-content-secondary-dark:#000a07a1;
+  --static-content-tertiary-dark: #00110b78;
+
+  /* Static Background */
+  --static-bg-key-light: #ffffff;
+
+  /* ─── Map tokens ─── */
+  --map-special-key:                    #ffffff;
+  --map-journey-points-end-bg-primary:  #0c2c1c;
+  --map-journey-points-start-bg-primary:#2b8659;
+
+  /* ─── App-level aliases (mapped to design system tokens above) ─── */
+  --color-brand:       var(--bg-action-primary);
+  --color-text-dark:   var(--content-primary);
+  --color-surface:     var(--layer-floor-1);
+
+  /* ─── Legacy app tokens (kept for backwards compat) ─── */
+  --color-primary: #1a1a2e;
+  --color-accent: #e94560;
+  --color-bg: #f5f5f5;
+  --color-text: #1a1a2e;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ─── Figma Typography Tokens (Global • Typography, node 23122:2216) ─── */
+
+  /* Font primitives */
+  --font-family:          'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-weight-regular:  450;
+  --font-weight-semibold: 650;
+  /* Aliases kept for backwards compat */
+  --font-weight-normal:   var(--font-weight-regular);
+  --font-weight-medium:   500;
+  --font-weight-bold:     var(--font-weight-semibold);
+
+  /* Display */
+  --type-display-m-size:           48px;
+  --type-display-m-lh:             60px;
+  --type-display-m-ls:             -0.022em;
+
+  /* Headings */
+  --type-heading-l-size:           32px;
+  --type-heading-l-lh:             40px;
+  --type-heading-l-ls:             -0.022em;
+
+  --type-heading-m-size:           28px;
+  --type-heading-m-lh:             36px;
+  --type-heading-m-ls:             -0.022em;
+
+  --type-heading-s-size:           24px;
+  --type-heading-s-lh:             30px;
+  --type-heading-s-ls:             -0.02em;
+
+  --type-heading-xs-size:          20px;
+  --type-heading-xs-lh:            25px;
+  --type-heading-xs-ls:            -0.017em;
+
+  /* Body L — 18px */
+  --type-body-l-size:              18px;
+  --type-body-l-lh:                24px;
+  --type-body-l-compact-lh:        22px;
+  --type-body-l-ls:                -0.014em;   /* -1.4% → -0.252px @ 18px */
+
+  /* Body M — 16px */
+  --type-body-m-size:              16px;
+  --type-body-m-lh:                24px;
+  --type-body-m-compact-lh:        20px;
+  --type-body-m-ls:                -0.011em;   /* -1.1% → -0.176px @ 16px */
+
+  /* Body S — 14px */
+  --type-body-s-size:              14px;
+  --type-body-s-lh:                20px;
+  --type-body-s-compact-lh:        18px;
+  --type-body-s-ls:                -0.006em;   /* -0.6% → -0.084px @ 14px */
+
+  /* Body XS — 12px */
+  --type-body-xs-size:             12px;
+  --type-body-xs-lh:               16px;
+  --type-body-xs-compact-lh:       15px;
+  --type-body-xs-ls:               0em;
+
+  /* Caps */
+  --type-caps-l-size:              16px;
+  --type-caps-l-lh:                20px;
+  --type-caps-l-ls:                0.069em;
+
+  --type-caps-m-size:              14px;
+  --type-caps-m-lh:                18px;
+  --type-caps-m-ls:                0.074em;
+
+  --type-caps-s-size:              11px;
+  --type-caps-s-lh:                15px;
+  --type-caps-s-ls:                0.08em;
+
+  /* Tabular (numeric-optimised letter-spacing) */
+  --type-tabular-l-ls:             -0.029em;
+  --type-tabular-m-ls:             -0.026em;
+  --type-tabular-s-ls:             -0.021em;
+  --type-tabular-xs-ls:            -0.015em;
+
+  /* Legacy size aliases */
+  --font-size-sm:   var(--type-body-s-size);
+  --font-size-base: var(--type-body-m-size);
+  --font-size-lg:   var(--type-body-l-size);
+  --font-size-xl:   var(--type-heading-xs-size);
+  --font-size-2xl:  var(--type-heading-l-size);
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 6px 24px rgba(0, 0, 0, 0.24);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}

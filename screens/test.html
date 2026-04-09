@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=375" />
+  <title>Test — New Pin</title>
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/screens.css" />
+</head>
+<body class="screen">
+<div class="phone-shell" style="display:flex;flex-direction:column;align-items:center;background:#ffffff;">
+
+  <div class="dynamic-island" aria-hidden="true"></div>
+
+  <!-- ── Status bar ───────────────────────────────────────────────
+       Component: components/status-bar.html
+       Copy the markup from that file here.               ──────── -->
+  <div class="status-bar" aria-hidden="true">
+    <span class="status-bar__time" id="status-bar-time">9:41</span>
+    <div class="status-bar__icons">
+      <img class="status-bar__signal"  src="../assets/images/Mobile Signal.svg" alt="" />
+      <img class="status-bar__wifi"    src="../assets/images/Wifi.svg"          alt="" />
+      <img class="status-bar__battery" src="../assets/images/Battery.svg"       alt="" />
+    </div>
+  </div>
+
+  <!-- Pin component centred in remaining space -->
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+  <div class="pickup-pin" aria-label="Pickup — 5 min — Tallinn Lennart Meri Airport">
+    <div class="pickup-pin__card">
+      <div class="pickup-pin__eta">
+        <span class="pickup-pin__eta-value">5</span>
+        <span class="pickup-pin__eta-unit">min</span>
+      </div>
+      <div class="pickup-pin__location">
+        <span class="pickup-pin__location-text">Tallinn Lennart Meri Airport</span>
+        <img class="pickup-pin__chevron" src="../assets/images/chevron-right.svg" alt="" aria-hidden="true" />
+      </div>
+      <img class="pickup-pin__pointer" src="../assets/images/pin-pointer.svg" alt="" aria-hidden="true" />
+    </div>
+    <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+    <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+  </div>
+  </div><!-- /pin wrapper -->
+
+</div>
+<script>
+(function () {
+  function _pad(n) { return n < 10 ? '0' + n : String(n); }
+  function _tick() {
+    var now = new Date();
+    var el = document.getElementById('status-bar-time');
+    if (el) el.textContent = now.getHours() + ':' + _pad(now.getMinutes());
+  }
+  _tick();
+  setInterval(_tick, 10000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+/* Screen-Specific Styles */
+
+/* --- Phone shell (375×812 mobile frame) --- */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+  box-sizing: border-box;
+}
+
+.phone-shell {
+  width: 375px;
+  height: 812px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 40px;
+  box-shadow: 0 0 0 10px #2a2a2a, 0 0 0 12px #444;
+}
+
+/* Dynamic Island — centered pill cutout, overlays everything */
+.dynamic-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 35px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.screen__content {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* --- Home Screen --- */
+.screen--home .screen__content h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--space-sm);
+}
+
+/* --- Category Screen --- */
+.screen--category {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--layer-floor-1);
+}
+
+/* Map area — fills remaining space above the bottom sheet */
+.map-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  /* Placeholder background until Google Maps loads */
+  background: #e8ede9;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+}
+
+/* Hide Mapbox attribution control */
+.mapboxgl-ctrl-attrib {
+  display: none !important;
+}
+
+/* Address bar — floats over the map */
+.address-bar {
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  right: 12px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0 12px;
+  background: var(--layer-floor-2);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.address-bar__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.address-bar__icon-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.address-bar__route {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.address-bar__origin {
+  font-family: var(--font-family);
+  font-size: var(--type-body-m-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-m-compact-lh);
+  letter-spacing: var(--type-body-m-ls);
+  color: #147b51; /* map journey start */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+}
+
+.address-bar__arrow {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: block;
+  margin: 0 2px;
+}
+
+.address-bar__destination {
+  font-family: var(--font-family);
+  font-size: var(--type-body-m-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-m-compact-lh);
+  letter-spacing: var(--type-body-m-ls);
+  color: #0c2c1c; /* map journey end */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+}
+
+/* FAB — positioned below status bar, top-left */
+.screen--category__fab {
+  position: absolute;
+  top: 44px;
+  left: 12px;
+  z-index: 15;
+}
+
+/* FAB — re-centre, same row, top-right */
+.screen--category__fab-recentre {
+  position: absolute;
+  top: 44px;
+  right: 12px;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+.screen--category__fab-recentre.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Category screen: bottom sheet occupies exactly half the phone frame */
+.screen--category .bottom-sheet {
+  height: 418px; /* 812px / 2 + 12px */
+}
+
+/* Bottom sheet — white panel anchored to the bottom */
+.bottom-sheet {
+  flex-shrink: 0;
+  background: var(--layer-floor-1);
+  border-radius: 16px 16px 0 0;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Drag handle */
+.bottom-sheet__handle-wrap {
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bottom-sheet__handle {
+  width: 48px;
+  height: 6px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Category list inside bottom sheet */
+.bottom-sheet .category-list {
+  box-shadow: none;
+  flex: 1;
+  min-height: 0;
+  overflow: visible; /* items overflow into order-sheet space, hidden behind it */
+}
+
+/* Order sheet sits on top — covers category items that overflow into its space */
+.bottom-sheet .order-sheet {
+  position: relative;
+  z-index: 1;
+}
+
+/* Order sheet inside bottom sheet — suppress its own shadow */
+.bottom-sheet .order-sheet {
+  box-shadow: none;
+  border-top: 1px solid var(--border-separator);
+}
+
+/* Shared map utilities (used by other screens with the old map-wrapper) */
+.map-wrapper {
+  position: relative;
+}
+
+.map-container {
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.map-wrapper .pin {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  pointer-events: none;
+}
+
+.route-meta {
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: center;
+  padding: var(--space-xs) 0;
+}
+
+.route-meta__item {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}

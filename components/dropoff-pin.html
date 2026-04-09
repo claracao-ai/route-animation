@@ -1,0 +1,20 @@
+<!-- Dropoff Pin Component -->
+<!-- Horizontal pill: white ETA section (left, dark text) + dark address section (right, white text) -->
+<!-- Tail pointer + ground ellipse + target dot anchors it to the map coordinate -->
+<!-- Usage: built programmatically by maps.js _buildDropoffPin(); or copy here -->
+<!-- Asset paths are relative to /screens/ -->
+
+<div class="dropoff-pin" aria-label="Dropoff — Vana-Lõuna 15">
+  <div class="dropoff-pin__card">
+    <div class="dropoff-pin__eta">
+      <span class="dropoff-pin__eta-value">10:05</span>
+    </div>
+    <div class="dropoff-pin__location">
+      <span class="dropoff-pin__location-text">Vana-Lõuna 15</span>
+      <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+    </div>
+    <img class="dropoff-pin__pointer" src="../assets/images/pin-pointer-dark.svg" alt="" aria-hidden="true" />
+  </div>
+  <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+  <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+</div>

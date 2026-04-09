@@ -1,0 +1,46 @@
+<!-- Address Input Component -->
+<!-- Combined pickup + destination route input with swap and add-stop actions -->
+<!-- Usage: place inside .screen--destination, after the nav bar -->
+
+<div class="address-input">
+  <div class="route-input">
+
+    <div class="route-input__box">
+      <div class="route-input__icons" aria-hidden="true">
+        <div class="route-input__point route-input__point--pickup"></div>
+        <div class="route-input__connector"></div>
+        <div class="route-input__point route-input__point--dropoff"></div>
+      </div>
+
+      <div class="route-input__fields">
+        <div class="route-input__field-wrap">
+          <div class="route-input__row">
+            <input id="input-origin" class="route-input__field" type="text"
+              placeholder="Pickup location" autocomplete="off" aria-label="Pickup location" />
+          </div>
+        </div>
+
+        <div class="route-input__separator"></div>
+
+        <div class="route-input__field-wrap">
+          <div class="route-input__row">
+            <input id="input-destination" class="route-input__field" type="text"
+              placeholder="Dropoff location" autocomplete="off" aria-label="Destination" />
+            <img class="route-input__dest-icon" src="../assets/images/map destination.svg" alt="" aria-hidden="true" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Swap & add-stop buttons -->
+    <div class="route-input__actions">
+      <button class="route-input__action-btn" id="btn-swap" type="button" aria-label="Swap pickup and destination">
+        <img src="../assets/images/reorder_vert.svg" width="24" height="24" alt="" aria-hidden="true" />
+      </button>
+      <button class="route-input__action-btn" type="button" aria-label="Add stop">
+        <img src="../assets/images/add.png" alt="" />
+      </button>
+    </div>
+
+  </div>
+</div>

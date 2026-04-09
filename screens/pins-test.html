@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Pin Variants</title>
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: var(--font-family, "Inter Variable", sans-serif);
+      background: #1a1a1a;
+      color: #fff;
+      padding: 40px 32px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 32px;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.4);
+      margin: 40px 0 12px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px 48px;
+      background: #e8ede9;
+      border-radius: 16px;
+      padding: 40px 32px;
+    }
+    .tile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 192px;
+    }
+    .tile__label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(0,0,0,0.35);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pin Variants</h1>
+
+  <!-- ── Pickup Pin ──────────────────────────────────────────────── -->
+  <h2>Pickup Pin</h2>
+  <div class="grid">
+
+    <div class="tile">
+      <span class="tile__label">Top</span>
+      <div class="pickup-pin" aria-label="Pickup — 5 min — Vana-Lõuna 15">
+        <div class="pickup-pin__card">
+          <div class="pickup-pin__eta">
+            <span class="pickup-pin__eta-value">5</span>
+            <span class="pickup-pin__eta-unit">min</span>
+          </div>
+          <div class="pickup-pin__location">
+            <span class="pickup-pin__location-text">Vana-Lõuna 15</span>
+            <img class="pickup-pin__chevron" src="../assets/images/chevron-right-pickup.svg" alt="" aria-hidden="true" />
+          </div>
+          <img class="pickup-pin__pointer" src="../assets/images/pin-pointer.svg" alt="" aria-hidden="true" />
+        </div>
+        <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+        <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="tile__label">Bottom</span>
+      <div class="pickup-pin pickup-pin--bottom" aria-label="Pickup — 5 min — Vana-Lõuna 15">
+        <div class="pickup-pin__card">
+          <div class="pickup-pin__eta">
+            <span class="pickup-pin__eta-value">5</span>
+            <span class="pickup-pin__eta-unit">min</span>
+          </div>
+          <div class="pickup-pin__location">
+            <span class="pickup-pin__location-text">Vana-Lõuna 15</span>
+            <img class="pickup-pin__chevron" src="../assets/images/chevron-right-pickup.svg" alt="" aria-hidden="true" />
+          </div>
+          <img class="pickup-pin__pointer" src="../assets/images/pin-pointer.svg" alt="" aria-hidden="true" />
+        </div>
+        <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+        <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="tile__label">Right</span>
+      <div class="pickup-pin pickup-pin--right" aria-label="Pickup — 5 min — Vana-Lõuna 15">
+        <div class="pickup-pin__card">
+          <div class="pickup-pin__eta">
+            <span class="pickup-pin__eta-value">5</span>
+            <span class="pickup-pin__eta-unit">min</span>
+          </div>
+          <div class="pickup-pin__location">
+            <span class="pickup-pin__location-text">Vana-Lõuna 15</span>
+            <img class="pickup-pin__chevron" src="../assets/images/chevron-right-pickup.svg" alt="" aria-hidden="true" />
+          </div>
+          <img class="pickup-pin__pointer" src="../assets/images/pin-pointer.svg" alt="" aria-hidden="true" />
+        </div>
+        <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+        <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Dropoff Pin ─────────────────────────────────────────────── -->
+  <h2>Dropoff Pin</h2>
+  <div class="grid">
+
+    <div class="tile">
+      <span class="tile__label">Top</span>
+      <div class="dropoff-pin" aria-label="Dropoff — 10:05 — Gonsiori 125">
+        <div class="dropoff-pin__card">
+          <div class="dropoff-pin__eta">
+            <span class="dropoff-pin__eta-value">10:05</span>
+          </div>
+          <div class="dropoff-pin__location">
+            <span class="dropoff-pin__location-text">Gonsiori 125</span>
+            <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+          </div>
+          <img class="dropoff-pin__pointer" src="../assets/images/pin-pointer-dark.svg" alt="" aria-hidden="true" />
+        </div>
+        <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+        <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="tile__label">Bottom</span>
+      <div class="dropoff-pin dropoff-pin--bottom" aria-label="Dropoff — 10:05 — Gonsiori 125">
+        <div class="dropoff-pin__card">
+          <div class="dropoff-pin__eta">
+            <span class="dropoff-pin__eta-value">10:05</span>
+          </div>
+          <div class="dropoff-pin__location">
+            <span class="dropoff-pin__location-text">Gonsiori 125</span>
+            <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+          </div>
+          <img class="dropoff-pin__pointer" src="../assets/images/pin-pointer-dark.svg" alt="" aria-hidden="true" />
+        </div>
+        <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+        <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="tile__label">Right</span>
+      <div class="dropoff-pin dropoff-pin--right" aria-label="Dropoff — 10:05 — Gonsiori 125">
+        <div class="dropoff-pin__card">
+          <div class="dropoff-pin__eta">
+            <span class="dropoff-pin__eta-value">10:05</span>
+          </div>
+          <div class="dropoff-pin__location">
+            <span class="dropoff-pin__location-text">Gonsiori 125</span>
+            <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+          </div>
+          <img class="dropoff-pin__pointer" src="../assets/images/pin-pointer-dark.svg" alt="" aria-hidden="true" />
+        </div>
+        <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+        <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

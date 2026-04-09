@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=375" />
+  <title>Route</title>
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/screens.css" />
+  <style>
+    /* ── Screen ── */
+    .screen--destination {
+      background: var(--layer-floor-1);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* ── Navigation bar ── */
+    .dest-nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      padding: 0 12px;
+      margin-top: 44px;
+      flex-shrink: 0;
+    }
+
+    .dest-nav__title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      font-family: var(--font-family);
+      font-size: var(--type-body-l-size);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--type-body-l-compact-lh);
+      letter-spacing: var(--type-body-l-ls);
+      color: var(--content-primary);
+      font-feature-settings: 'cv03' 1, 'cv04' 1;
+      pointer-events: none;
+    }
+
+    .dest-nav__btn {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--content-primary);
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    .dest-nav__btn:active { opacity: 0.6; }
+
+
+    /* ── Saved places list ── */
+    .dest-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+    }
+
+    .dest-list__item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+      min-height: 56px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .dest-list__item:active { background: var(--bg-neutral-secondary); }
+
+    /* Separator line on each item except last */
+    .dest-list__item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background: var(--border-separator);
+    }
+
+    .dest-list__item:last-child::after { display: none; }
+
+    .dest-list__icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      color: var(--content-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dest-list__text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .dest-list__primary {
+      font-family: var(--font-family);
+      font-size: var(--type-body-m-size);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--type-body-m-compact-lh);
+      letter-spacing: var(--type-body-m-ls);
+      color: var(--content-primary);
+      font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dest-list__secondary {
+      font-family: var(--font-family);
+      font-size: var(--type-body-s-size);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--type-body-s-lh);
+      letter-spacing: var(--type-body-s-ls);
+      color: var(--content-secondary);
+      font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+  </style>
+</head>
+<body class="screen screen--destination">
+<div class="phone-shell">
+
+  <div class="dynamic-island" aria-hidden="true"></div>
+
+  <!-- ── Status bar ───────────────────────────────────────────────
+       Component: components/status-bar.html
+       Copy the markup from that file here.               ──────── -->
+  <div class="status-bar" aria-hidden="true">
+    <span class="status-bar__time" id="status-bar-time">9:41</span>
+    <div class="status-bar__icons">
+      <img class="status-bar__signal"  src="../assets/images/Mobile Signal.svg" alt="" />
+      <img class="status-bar__wifi"    src="../assets/images/Wifi.svg"          alt="" />
+      <img class="status-bar__battery" src="../assets/images/Battery.svg"       alt="" />
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="dest-nav">
+    <button class="dest-nav__btn" onclick="history.back()" aria-label="Close">
+      <img src="../assets/images/close.png" width="24" height="24" alt="" aria-hidden="true" />
+    </button>
+    <h1 class="dest-nav__title">Route</h1>
+  </nav>
+
+  <!-- Component: components/address-input.html -->
+  <div class="address-input">
+    <div class="route-input">
+
+      <div class="route-input__box">
+        <div class="route-input__icons" aria-hidden="true">
+          <div class="route-input__point route-input__point--pickup"></div>
+          <div class="route-input__connector"></div>
+          <div class="route-input__point route-input__point--dropoff"></div>
+        </div>
+
+        <div class="route-input__fields">
+          <div class="route-input__field-wrap">
+            <div class="route-input__row">
+              <input id="input-origin" class="route-input__field" type="text"
+                placeholder="Pickup location" autocomplete="off" aria-label="Pickup location" />
+              <img class="route-input__dest-icon" src="../assets/images/map destination.svg" alt="" aria-hidden="true" />
+            </div>
+          </div>
+
+          <div class="route-input__separator"></div>
+
+          <div class="route-input__field-wrap">
+            <div class="route-input__row">
+              <input id="input-destination" class="route-input__field" type="text"
+                placeholder="Dropoff location" autocomplete="off" aria-label="Destination" />
+              <img class="route-input__dest-icon" src="../assets/images/map destination.svg" alt="" aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Swap & add-stop buttons -->
+      <div class="route-input__actions">
+        <button class="route-input__action-btn" id="btn-swap" type="button" aria-label="Swap pickup and destination">
+          <img src="../assets/images/reorder_vert.svg" width="24" height="24" alt="" aria-hidden="true" />
+        </button>
+        <button class="route-input__action-btn" type="button" aria-label="Add stop">
+          <img src="../assets/images/add.png" alt="" />
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Live suggestion results (empty until user types) -->
+  <ul class="dest-list" id="dest-list" aria-label="Suggestions" aria-live="polite"></ul>
+
+  </div><!-- /phone-shell -->
+  <script src="../js/config.js"></script>
+  <script>
+    var _coords    = { origin: null, destination: null };
+    var _debounce  = {};
+    var _activeKey = 'destination'; // which field suggestions are for
+
+    // Country code + coords from the picked origin — used to bias destination results.
+    var _originMeta = {
+      countryCode: sessionStorage.getItem('route_origin_country') || null,
+      coords:      JSON.parse(sessionStorage.getItem('route_origin_coords') || 'null')
+    };
+
+    // Simplify a full Mapbox place_name for display in the input field.
+    // Removes postcode segments and trailing city / country parts.
+    // "Vana-Lõuna 15, Tallinn, 10133, Estonia" → "Vana-Lõuna 15"
+    // "Solaris Keskus, Estonia pst 9, Tallinn, 10143, Estonia" → "Solaris Keskus, Estonia pst 9"
+    function _simplifyAddress(placeName) {
+      if (!placeName) return '';
+      var parts = placeName.split(',').map(function (s) { return s.trim(); });
+      var cleaned = parts.filter(function (p) {
+        return !/^[A-Z]{0,3}[-\s]?\d{3,6}$/i.test(p) && !/^\d{3,6}$/.test(p);
+      });
+      if (cleaned.length > 1) cleaned = cleaned.slice(0, cleaned.length - 1); // drop country
+      if (cleaned.length > 1) cleaned = cleaned.slice(0, cleaned.length - 1); // drop city
+      return cleaned.join(', ') || parts[0];
+    }
+
+    // Extract ISO 3166-1 alpha-2 country code from a Mapbox feature context array.
+    function _extractCountryCode(feature) {
+      var ctx = feature.context || [];
+      for (var i = 0; i < ctx.length; i++) {
+        if (ctx[i].id && ctx[i].id.indexOf('country.') === 0) {
+          return ctx[i].short_code || null;
+        }
+      }
+      return null;
+    }
+
+    var list       = document.getElementById('dest-list');
+    var originEl   = document.getElementById('input-origin');
+    var destEl     = document.getElementById('input-destination');
+
+    // ── History (localStorage) ────────────────────────────────────────────────
+    var HISTORY_KEY = 'route_address_history';
+    var MAX_HISTORY = 5;
+
+    function getHistory() {
+      try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+      catch (e) { return []; }
+    }
+
+    function saveToHistory(entry) {
+      // entry: { place_name, text, center }
+      var history = getHistory().filter(function (h) { return h.place_name !== entry.place_name; });
+      history.unshift(entry);
+      if (history.length > MAX_HISTORY) history.length = MAX_HISTORY;
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    }
+
+    // ── Navigate ──────────────────────────────────────────────────────────────
+    function navigate() {
+      var o = originEl.value.trim();
+      var d = destEl.value.trim();
+      if (!o || !d) return;
+      sessionStorage.setItem('route_origin',             o);
+      sessionStorage.setItem('route_destination',        d);
+      sessionStorage.setItem('route_origin_coords',      JSON.stringify(_coords.origin));
+      sessionStorage.setItem('route_destination_coords', JSON.stringify(_coords.destination));
+      window.location.href = 'category.html';
+    }
+
+    // ── Build a single list item ──────────────────────────────────────────────
+    function buildItem(primaryText, secondaryText, iconSrc, onPick) {
+      var li = document.createElement('li');
+      li.className = 'dest-list__item';
+      li.setAttribute('tabindex', '0');
+
+      var icon = document.createElement('div');
+      icon.className = 'dest-list__icon';
+      icon.innerHTML = '<img src="' + iconSrc + '" width="24" height="24" alt="" aria-hidden="true" />';
+
+      var textWrap = document.createElement('div');
+      textWrap.className = 'dest-list__text';
+
+      var primary = document.createElement('span');
+      primary.className = 'dest-list__primary';
+      primary.textContent = primaryText;
+
+      var secondary = document.createElement('span');
+      secondary.className = 'dest-list__secondary';
+      secondary.textContent = secondaryText;
+
+      textWrap.appendChild(primary);
+      textWrap.appendChild(secondary);
+      li.appendChild(icon);
+      li.appendChild(textWrap);
+
+      li.addEventListener('mousedown', function (e) { e.preventDefault(); onPick(); });
+      li.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick(); }
+      });
+
+      return li;
+    }
+
+    // ── Render Mapbox autocomplete results ────────────────────────────────────
+    function renderList(features, coordKey, inputEl) {
+      list.innerHTML = '';
+      features.forEach(function (f) {
+        var parts     = f.place_name.split(',');
+        var primary   = parts[0].trim();
+        var secondary = parts.slice(1).join(',').trim();
+        var li = buildItem(primary, secondary, '../assets/images/pin (outline).png', function () {
+          inputEl.value     = _simplifyAddress(f.place_name);
+          _coords[coordKey] = f.center;
+
+          // When origin is picked, capture its country + coords for destination biasing.
+          if (coordKey === 'origin') {
+            _originMeta.countryCode = _extractCountryCode(f);
+            _originMeta.coords      = f.center;
+            sessionStorage.setItem('route_origin_country', _originMeta.countryCode || '');
+          }
+
+          list.innerHTML = '';
+          saveToHistory({ place_name: f.place_name, text: f.text, center: f.center });
+          navigate();
+        });
+        list.appendChild(li);
+      });
+    }
+
+    // ── Render history items ──────────────────────────────────────────────────
+    function renderHistory(coordKey, inputEl) {
+      var history = getHistory();
+      if (!history.length) { list.innerHTML = ''; return; }
+      list.innerHTML = '';
+      history.forEach(function (h) {
+        var parts     = h.place_name.split(',');
+        var primary   = parts[0].trim();
+        var secondary = parts.slice(1).join(',').trim();
+        var li = buildItem(primary, secondary, '../assets/images/pin (outline).png', function () {
+          inputEl.value     = _simplifyAddress(h.place_name);
+          _coords[coordKey] = h.center;
+          list.innerHTML    = '';
+          navigate();
+        });
+        list.appendChild(li);
+      });
+    }
+
+    // ── Fetch from Mapbox ─────────────────────────────────────────────────────
+    function fetchAndRender(query, coordKey, inputEl) {
+      var url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+        + encodeURIComponent(query)
+        + '.json?autocomplete=true&limit=6&types=address,poi';
+
+      // Bias destination results toward the origin's country and city.
+      if (coordKey === 'destination') {
+        var meta = _originMeta;
+        // proximity biases ranking toward the origin coordinates (city-level effect).
+        var c = meta.coords || _coords.origin;
+        if (c) url += '&proximity=' + c[0] + ',' + c[1];
+        // country hard-filters to the same country.
+        if (meta.countryCode) url += '&country=' + encodeURIComponent(meta.countryCode);
+      }
+
+      url += '&access_token=' + APP_CONFIG.mapboxToken;
+      fetch(url)
+        .then(function (r) { return r.json(); })
+        .then(function (d) { renderList(d.features || [], coordKey, inputEl); })
+        .catch(function ()  { list.innerHTML = ''; });
+    }
+
+    // ── Wire up each input ────────────────────────────────────────────────────
+    function setupInput(inputEl, coordKey) {
+      inputEl.addEventListener('focus', function () {
+        _activeKey = coordKey;
+        var q = inputEl.value.trim();
+        if (q.length >= 2) {
+          fetchAndRender(q, coordKey, inputEl);
+        } else {
+          renderHistory(coordKey, inputEl);
+        }
+      });
+
+      inputEl.addEventListener('input', function () {
+        _coords[coordKey] = null;
+        clearTimeout(_debounce[coordKey]);
+        var q = inputEl.value.trim();
+        if (q.length < 2) { renderHistory(coordKey, inputEl); return; }
+        _debounce[coordKey] = setTimeout(function () {
+          fetchAndRender(q, coordKey, inputEl);
+        }, 250);
+      });
+
+      inputEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') e.preventDefault();
+        if (e.key === 'Escape') list.innerHTML = '';
+      });
+    }
+
+    setupInput(originEl, 'origin');
+    setupInput(destEl,   'destination');
+
+    // ── Swap ──────────────────────────────────────────────────────────────────
+    document.getElementById('btn-swap').addEventListener('click', function () {
+      var tv = originEl.value; originEl.value = destEl.value; destEl.value = tv;
+      var tc = _coords.origin; _coords.origin = _coords.destination; _coords.destination = tc;
+    });
+
+    // ── Restore session values and focus the right field ─────────────────────
+    (function () {
+      var prevOrigin = sessionStorage.getItem('route_origin');
+      var prevDest   = sessionStorage.getItem('route_destination');
+
+      if (prevOrigin) {
+        originEl.value = _simplifyAddress(prevOrigin);
+        _coords.origin = JSON.parse(sessionStorage.getItem('route_origin_coords') || 'null');
+      }
+      if (prevDest) {
+        destEl.value        = _simplifyAddress(prevDest);
+        _coords.destination = JSON.parse(sessionStorage.getItem('route_destination_coords') || 'null');
+      }
+
+      // Focus the field indicated by the URL hash (#origin or #destination).
+      var hash = window.location.hash;
+      if (hash === '#origin') {
+        originEl.focus();
+        originEl.select();
+      } else if (hash === '#destination') {
+        destEl.focus();
+        destEl.select();
+      } else if (prevOrigin) {
+        destEl.focus();
+      }
+    })();
+  </script>
+
+<script>
+(function () {
+  function _pad(n) { return n < 10 ? '0' + n : String(n); }
+  function _tick() {
+    var now = new Date();
+    var el = document.getElementById('status-bar-time');
+    if (el) el.textContent = now.getHours() + ':' + _pad(now.getMinutes());
+  }
+  _tick();
+  setInterval(_tick, 10000);
+})();
+</script>
+</body>
+</html>

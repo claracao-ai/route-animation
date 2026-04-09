@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_figma_figma__get_design_context",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/f6af906a-ca09-4b36-8567-8461b72e44c5\" -o /Users/claracao/Projects-new/Route-animation/assets/images/pin-ellipse.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/e8fa7008-a574-4937-a054-750019f62c72\" -o /Users/claracao/Projects-new/Route-animation/assets/images/pin-target.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/cb060e1a-3c01-4787-8b34-0b9e4563800f\" -o /Users/claracao/Projects-new/Route-animation/assets/images/pin-pile.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/fba1a256-bac1-48e4-ae1f-2609a4a4981f\" -o /Users/claracao/Projects-new/Route-animation/assets/images/pin-pointer.png)",
+      "mcp__plugin_figma_figma__get_metadata",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/6399f214-7639-4fc1-9ef4-3020bc0843cd\" -o /Users/claracao/Projects-new/Route-animation/assets/images/chevron-down.png)",
+      "mcp__plugin_figma_figma__get_variable_defs",
+      "Bash(python3:*)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/d18ae73e-a98d-46e0-9928-681b2286a3ef\" -o /Users/claracao/Projects-new/Route-animation/assets/images/icon-scheduling.png)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/96560505-5021-411a-805e-5d33174580bc\" -o icon-user.svg)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/f7b03608-947f-4f03-a1e4-0ad1c19d4b20\" -o icon-surge.svg)",
+      "Bash(wait)",
+      "Bash(mv icon-user.svg assets/images/icon-user.svg)",
+      "Bash(mv icon-surge.svg assets/images/icon-surge.svg)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/a657c528-7374-4f99-be6a-865e2ee9b614\" -o assets/images/icon-chevron-down.svg)",
+      "Bash(file vehicle-*.png)",
+      "Bash(mv screens/ride-select.html screens/category.html)",
+      "Bash(rm screens/payment.html)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/2e140398-751e-4494-9d33-3f898d549ad6\" -o icon-close.svg)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/16cf2b5a-d95e-4572-9a8a-ebb607a8be6b\" -o icon-arrow-right.svg)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/99fd49f7-b28a-44e8-92b6-56bf46b2fb17\" -o icon-plus.svg)",
+      "Bash(node -e \"require\\('sharp'\\)\")",
+      "Bash(node -e \"require\\('canvas'\\)\")",
+      "Bash(ls:*)",
+      "Bash(sed:*)",
+      "Bash(rm:*)",
+      "Bash(curl -s -o \"route-point-origin.png\" \"https://www.figma.com/api/mcp/asset/a51f6bb8-437b-4c3a-9488-f7f677585fac\")",
+      "Bash(curl -s -o \"route-connector.png\" \"https://www.figma.com/api/mcp/asset/91d5750e-e0c1-4e50-a6af-6276a730420b\")",
+      "Bash(curl -s -o \"route-point-dest.png\" \"https://www.figma.com/api/mcp/asset/fd0b9dab-a116-4629-b425-fb829590945c\")",
+      "Bash(curl -s -o \"arrow-diagonal.png\" \"https://www.figma.com/api/mcp/asset/eeee3315-c4a1-46d1-8e32-6b9c6a12814f\")"
+    ]
+  }
+}

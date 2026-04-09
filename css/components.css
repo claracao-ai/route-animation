@@ -1,0 +1,1025 @@
+/* Component Styles */
+
+/* --- Navbar --- */
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar__logo {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  flex: 1;
+  text-align: center;
+}
+
+.navbar__back {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  text-decoration: none;
+  width: 32px;
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: opacity var(--transition-fast);
+}
+
+.btn:active {
+  opacity: 0.8;
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  width: auto;
+}
+
+/* --- Input --- */
+.input {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+  border-color: var(--color-accent);
+}
+
+/* --- Category List --- */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.category-item {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  padding-left: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  outline: none;
+}
+
+.category-item--selected {
+  border-color: var(--border-action-primary);
+}
+
+.category-item:focus-visible {
+  border-color: var(--border-action-primary);
+}
+
+.category-item__image {
+  width: 80px;
+  height: 48px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.category-item__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.category-item__info {
+  flex: 1;
+  min-width: 0;
+  padding: 16px 16px 16px 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Separator line — shown on all unselected rows */
+.category-item__separator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border-separator);
+}
+
+.category-item--selected .category-item__separator {
+  display: none;
+}
+
+/* Row 1: name + price */
+.category-item__row1 {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding-bottom: 2px;
+}
+
+.category-item__title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.category-item__name {
+  font-family: var(--font-family);
+  font-size: var(--type-body-l-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-l-compact-lh);
+  letter-spacing: var(--type-body-l-ls);
+  color: var(--content-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  font-style: normal;
+}
+
+.category-item__price {
+  font-family: var(--font-family);
+  font-size: var(--type-body-l-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-l-compact-lh);
+  letter-spacing: var(--type-body-l-ls);
+  color: var(--content-primary);
+  white-space: nowrap;
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  font-style: normal;
+  flex-shrink: 0;
+}
+
+/* Surge icon — natural square ratio, constrained to row height */
+.category-item__surge {
+  height: 14px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* Row 2: ETA + pax count */
+.category-item__row2 {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.category-item__eta,
+.category-item__pax span {
+  font-family: var(--font-family);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  letter-spacing: var(--type-body-s-ls);
+  color: var(--content-secondary);
+  white-space: nowrap;
+  font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+  font-style: normal;
+}
+
+.category-item__pax {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.category-item__pax-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* --- Order Sheet (Bottom Panel) --- */
+.order-sheet {
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--space-md) var(--space-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Payment row */
+.order-sheet__payment {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  width: 100%;
+}
+
+.order-sheet__payment-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-sheet__card-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 32px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.order-sheet__payment-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.order-sheet__card-number {
+  font-family: var(--font-family);
+  font-size: var(--type-body-m-size);
+  line-height: var(--type-body-m-lh);
+  letter-spacing: var(--type-body-m-ls);
+  color: var(--color-text-dark);
+  white-space: nowrap;
+  font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+}
+
+.order-sheet__chevron {
+  display: block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* Buttons row */
+.order-sheet__buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.order-sheet__select-btn {
+  flex: 1;
+  min-height: 56px;
+  background: var(--color-brand);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-size: var(--type-body-l-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-l-compact-lh);
+  letter-spacing: var(--type-body-l-ls);
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  padding: 4px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--transition-fast);
+}
+
+.order-sheet__select-btn:active {
+  opacity: 0.85;
+}
+
+.order-sheet__schedule-btn {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  background: var(--color-brand);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--transition-fast);
+}
+
+.order-sheet__schedule-btn:active {
+  opacity: 0.85;
+}
+
+.order-sheet__schedule-btn img {
+  /* Invert the dark icon to white for the green button background */
+  filter: brightness(0) invert(1);
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+/* --- Status Bar --- */
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  padding: 10px 27px 12px 37px;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--content-primary);
+  /* No background — map/content visible underneath */
+}
+
+.status-bar__time {
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.3px;
+}
+
+.status-bar__icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-bar__signal,
+.status-bar__wifi,
+.status-bar__battery {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* --- FAB --- */
+.fab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 9600px;
+  background: var(--layer-floor-2);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.fab__icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* --- Map Pin --- */
+.pin {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  isolation: isolate;
+  position: relative;
+}
+
+.pin__bubble {
+  background: var(--color-brand);             /* #2b8659 — map journey start */
+  border-radius: 8px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16); /* Elevation 1 */
+}
+
+.pin--dropoff .pin__bubble {
+  background: var(--color-primary);           /* destination variant */
+}
+
+.pin__labels {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 8px 5px;
+  color: #ffffff;
+  white-space: nowrap;
+  font-family: var(--font-family);
+  font-style: normal;
+}
+
+.pin__label {
+  font-size: var(--type-body-xs-size);
+  line-height: var(--type-body-xs-compact-lh);
+  font-weight: var(--font-weight-regular);
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+}
+
+.pin__value {
+  font-size: var(--type-body-l-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-l-compact-lh);
+  letter-spacing: var(--type-body-l-ls);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+}
+
+/* Pillar: relative anchor for all stem/shadow images */
+.pin__pillar {
+  position: relative;
+  height: 20px;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Vertical stem */
+.pin__pile {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -21px;
+  width: 4px;
+  height: 21px;
+  display: block;
+}
+
+/* Arrow connector */
+.pin__pointer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 20px;
+  height: 7px;
+  display: block;
+}
+
+/* Ground shadow — rendered at 36×36 to account for image overflow past its 18px logical container */
+.pin__ellipse {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 4px; /* 11px container top − 7px image top-overhang */
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+/* Ground contact dot */
+.pin__target {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 17px;
+  width: 6px;
+  height: 6px;
+  display: block;
+}
+
+/* --- Pickup pin ETA roll animation --- */
+@keyframes eta-roll-out {
+  0%   { transform: translateY(0);   opacity: 1; }
+  100% { transform: translateY(-40%); opacity: 0; }
+}
+@keyframes eta-roll-in {
+  0%   { transform: translateY(40%); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
+.pickup-pin__eta-value--roll-out {
+  animation: eta-roll-out 180ms ease-in forwards;
+}
+.pickup-pin__eta-value--roll-in {
+  animation: eta-roll-in  220ms ease-out forwards;
+}
+
+/* --- Pickup Pin --- */
+/* Horizontal pill: green ETA badge (left) + white address label (right) */
+.pickup-pin {
+  position: relative;
+  display: inline-block;
+  width: 149px;
+  height: 80px; /* accounts for bubble 34px + pointer + ellipse bottom at ~74px */
+}
+
+/* Groups pill + pointer so drop-shadow follows the combined shape */
+.pickup-pin__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 154px;
+  height: 41px; /* 34px bubble + 7px pointer */
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+/* Green ETA badge — left section, rounded left only */
+.pickup-pin__eta {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 41px;
+  height: 34px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px 5px;
+  background: var(--color-brand);
+  border-radius: 8px 0 0 8px;
+  color: #ffffff;
+  white-space: nowrap;
+  font-style: normal;
+  font-family: var(--font-family);
+}
+
+.pickup-pin__eta-value {
+  font-size: var(--type-body-s-size);         /* 14px */
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-s-compact-lh); /* 18px */
+  letter-spacing: var(--type-body-s-ls);      /* -0.084px */
+  font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pickup-pin__eta-unit {
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-body-xs-compact-lh); /* 15px */
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* White location label — right section, rounded right only */
+.pickup-pin__location {
+  position: absolute;
+  top: 0;
+  left: 41px;
+  width: fit-content;
+  max-width: 113px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 2px 2px 2px 6px;
+  background: var(--layer-floor-2);
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.pickup-pin__location-text {
+  width: auto;
+  max-width: 88px;
+  font-family: var(--font-family);
+  font-size: var(--type-body-xs-size);         /* 12px */
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-body-xs-compact-lh); /* 15px — 2 lines = 30px, fits in 34px section */
+  color: #147b51; /* map/journey/points/start/content-primary */
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  font-style: normal;
+  flex-shrink: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pickup-pin__chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+  color: #147b51; /* map/journey/points/start/content-primary */
+}
+
+/* Pointer: centred below ETA section (x = 19px = calc(50% of 149 − 55.5)) */
+.pickup-pin__pointer {
+  position: absolute;
+  top: 34px;
+  left: 9px; /* centre 19px − half-width 10px */
+  width: 20px;
+  height: 7px;
+  display: block;
+}
+
+/* Ground shadow ellipse: 36×36 rendered, centred at x=19px */
+.pickup-pin__ellipse {
+  position: absolute;
+  top: 41px; /* starts exactly where pointer ends (34 + 7) */
+  left: 1px;  /* centre 19px − half-width 18px */
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+/* White centre dot: centred on the ellipse circle (cy=16 in SVG → absolute centre 57px) */
+.pickup-pin__target {
+  position: absolute;
+  top: 54px;  /* 57px circle centre − 3px half-height */
+  left: 16px; /* 19px circle centre − 3px half-width */
+  width: 6px;
+  height: 6px;
+  display: block;
+}
+
+/* --- Dropoff Pin --- */
+/* Horizontal pill: white ETA section (left, dark text) + dark address section (right, white text) */
+.dropoff-pin {
+  position: relative;
+  display: inline-block;
+  width: 149px;
+  height: 80px;
+}
+
+.dropoff-pin__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 154px;
+  height: 41px;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+/* Dark ETA section — left, rounded left only, white text */
+.dropoff-pin__eta {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 41px;
+  min-height: 34px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  background: var(--map-journey-points-end-bg-primary, #0c2c1c);
+  border-radius: 8px 0 0 8px;
+  color: var(--map-special-key, #ffffff);
+  white-space: nowrap;
+  overflow: hidden;
+  font-style: normal;
+  font-family: var(--font-family);
+}
+
+.dropoff-pin__eta-value {
+  font-family: var(--font-family, "Inter Variable");
+  font-size: var(--type-body-xs-size, 12px);
+  font-style: normal;
+  font-weight: var(--font-weight-semibold, 650);
+  line-height: var(--type-body-xs-compact-lh, 15px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropoff-pin__eta-unit {
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-body-xs-compact-lh);
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* White address section — right, rounded right only */
+.dropoff-pin__location {
+  position: absolute;
+  top: 0;
+  left: 41px;
+  width: fit-content;
+  max-width: 113px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 2px 2px 2px 6px;
+  background: var(--layer-floor-2, #fff);
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.dropoff-pin__location-text {
+  width: auto;
+  max-width: 88px;
+  font-family: var(--font-family);
+  font-size: var(--type-body-xs-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-body-xs-compact-lh);
+  color: var(--map-journey-points-end-bg-primary, #0c2c1c);
+  font-feature-settings: 'cv03' 1, 'cv04' 1;
+  font-style: normal;
+  flex-shrink: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dropoff-pin__chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+  color: var(--map-journey-points-end-bg-primary, #0c2c1c);
+}
+
+.dropoff-pin__pointer {
+  position: absolute;
+  top: 34px;
+  left: 9px;
+  width: 20px;
+  height: 7px;
+  display: block;
+}
+
+.dropoff-pin__ellipse {
+  position: absolute;
+  top: 41px;
+  left: 1px;
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+.dropoff-pin__target {
+  position: absolute;
+  top: 54px;
+  left: 16px;
+  width: 6px;
+  height: 6px;
+  display: block;
+}
+
+/* --- Pin position variants ---
+   Modifier classes for both pickup-pin and dropoff-pin.
+   The default (no modifier) is --top: card above, pointer down, ellipse below.
+
+   Mapbox anchor offsets per variant (anchor='top-left'):
+     --top    offset=[-19, -57]   ellipse centre x=19, y=57
+     --bottom offset=[-19, -18]   ellipse centre x=19, y=18
+     --right  offset=[-18, -18]   ellipse centre x=18, y=18
+     --left   offset=[-174, -18]  ellipse centre x=174, y=18
+*/
+
+/* — pickup --bottom */
+.pickup-pin--bottom .pickup-pin__ellipse { top: 0; }
+.pickup-pin--bottom .pickup-pin__target  { top: 13px; }
+.pickup-pin--bottom .pickup-pin__card    { top: 36px; }
+.pickup-pin--bottom .pickup-pin__pointer { top: 0; transform: rotate(180deg); }
+.pickup-pin--bottom .pickup-pin__eta,
+.pickup-pin--bottom .pickup-pin__location { top: 7px; }
+
+/* — pickup --right  (card right, ellipse left) */
+.pickup-pin--right { width: 192px; height: 36px; }
+.pickup-pin--right .pickup-pin__ellipse { top: 0;    left: 0; }
+.pickup-pin--right .pickup-pin__target  { top: 13px; left: 15px; }
+.pickup-pin--right .pickup-pin__card    { top: 1px;  left: 43px; height: 34px; }
+.pickup-pin--right .pickup-pin__pointer { top: 14px; left: -13px; transform: rotate(90deg); }
+
+/* — dropoff --bottom */
+.dropoff-pin--bottom .dropoff-pin__ellipse { top: 0; }
+.dropoff-pin--bottom .dropoff-pin__target  { top: 13px; }
+.dropoff-pin--bottom .dropoff-pin__card    { top: 36px; }
+.dropoff-pin--bottom .dropoff-pin__pointer { top: 0; transform: rotate(180deg); }
+.dropoff-pin--bottom .dropoff-pin__eta,
+.dropoff-pin--bottom .dropoff-pin__location { top: 7px; }
+
+/* — dropoff --right */
+.dropoff-pin--right { width: 192px; height: 36px; }
+.dropoff-pin--right .dropoff-pin__ellipse { top: 0;    left: 0; }
+.dropoff-pin--right .dropoff-pin__target  { top: 13px; left: 15px; }
+.dropoff-pin--right .dropoff-pin__card    { top: 1px;  left: 43px; height: 34px; }
+.dropoff-pin--right .dropoff-pin__pointer { top: 14px; left: -13px; transform: rotate(90deg); }
+
+/* --- Ride Card --- */
+.ride-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast);
+}
+
+.ride-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.ride-card__icon {
+  font-size: 2rem;
+}
+
+.ride-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.ride-card__name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.ride-card__eta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.ride-card__price {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+/* ── Address Input ──────────────────────────────────────────────────────── */
+
+.address-input {
+  padding: 10px 12px 4px;
+  flex-shrink: 0;
+}
+
+.route-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.route-input__box {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  border: 2px solid var(--border-action-primary);
+  border-radius: var(--radius-md);
+  background: var(--layer-floor-1);
+  min-width: 0;
+}
+
+.route-input__icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 12px 0 12px 12px;
+}
+
+.route-input__point {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.route-input__point::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.route-input__point--pickup {
+  background: var(--color-brand);
+}
+
+.route-input__point--dropoff {
+  background: var(--map-journey-points-end-bg-primary, #0c2c1c);
+}
+
+.route-input__connector {
+  width: 2px;
+  flex: 1;
+  min-height: 10px;
+  background: linear-gradient(to bottom, #2b8659, #0c2c1c);
+}
+
+.route-input__fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: visible;
+  padding: 0 12px;
+}
+
+.route-input__field-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.route-input__row {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.route-input__field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-family);
+  font-size: var(--type-body-m-size);
+  line-height: var(--type-body-m-lh);
+  letter-spacing: var(--type-body-m-ls);
+  font-feature-settings: 'cv03' 1, 'cv04' 1, 'lnum' 1, 'pnum' 1;
+  color: var(--content-primary);
+  outline: none;
+  min-width: 0;
+  caret-color: var(--border-action-primary);
+  caret-width: 2px;
+}
+
+.route-input__field::placeholder {
+  color: var(--content-secondary);
+  font-weight: var(--font-weight-regular);
+}
+
+.route-input__separator {
+  height: 1px;
+  background: var(--border-separator);
+}
+
+.route-input__dest-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex-shrink: 0;
+  opacity: 0;
+  pointer-events: none;
+  color: var(--content-tertiary);
+}
+
+.route-input__row:focus-within .route-input__dest-icon {
+  opacity: 1;
+}
+
+.route-input__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.route-input__action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--content-primary);
+  border-radius: var(--radius-sm);
+}
+
+.route-input__action-btn:active { opacity: 0.6; }
+.route-input__action-btn img { width: 24px; height: 24px; display: block; }

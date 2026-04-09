@@ -1,0 +1,122 @@
+<!-- Bottom Sheet Component -->
+<!-- White panel anchored to the bottom of the screen -->
+<!-- Contains: drag handle, category list, order sheet -->
+<!-- Usage: copy into a screen as a direct child of .phone-shell -->
+<!-- Asset paths are relative to /screens/ -->
+
+<div class="bottom-sheet">
+
+  <!-- Drag handle -->
+  <div class="bottom-sheet__handle-wrap">
+    <div class="bottom-sheet__handle"></div>
+  </div>
+
+  <!-- Category list -->
+  <div class="category-list" role="radiogroup" aria-label="Select ride category">
+
+    <div class="category-item category-item--selected" role="radio" aria-checked="true" tabindex="0" aria-label="Bolt, 5 minutes away, 4 seats, 5,50 euros">
+      <div class="category-item__image"><img src="../assets/images/vehicle-standard.png" alt="" aria-hidden="true" /></div>
+      <div class="category-item__info">
+        <div class="category-item__row1">
+          <div class="category-item__title"><span class="category-item__name">Bolt</span></div>
+          <span class="category-item__price">5,50 €</span>
+        </div>
+        <div class="category-item__row2">
+          <span class="category-item__eta">5 min</span>
+          <span class="category-item__pax">
+            <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="Basic with surge pricing, 5 minutes away, 4 seats, 4,20 euros">
+      <div class="category-item__image"><img src="../assets/images/vehicle-hatchback.png" alt="" aria-hidden="true" /></div>
+      <div class="category-item__info">
+        <div class="category-item__separator"></div>
+        <div class="category-item__row1">
+          <div class="category-item__title">
+            <span class="category-item__name">Basic</span>
+            <img class="category-item__surge" src="../assets/images/surge_original.png" alt="Surge pricing active" />
+          </div>
+          <span class="category-item__price">4,20 €</span>
+        </div>
+        <div class="category-item__row2">
+          <span class="category-item__eta">5 min</span>
+          <span class="category-item__pax">
+            <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="Comfort, 2 minutes away, 4 seats, 7,20 euros">
+      <div class="category-item__image"><img src="../assets/images/vehicle-comfort.png" alt="" aria-hidden="true" /></div>
+      <div class="category-item__info">
+        <div class="category-item__separator"></div>
+        <div class="category-item__row1">
+          <div class="category-item__title"><span class="category-item__name">Comfort</span></div>
+          <span class="category-item__price">7,20 €</span>
+        </div>
+        <div class="category-item__row2">
+          <span class="category-item__eta">2 min</span>
+          <span class="category-item__pax">
+            <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="Premium, 2 minutes away, 4 seats, 9,20 euros">
+      <div class="category-item__image"><img src="../assets/images/vehicle-premium.png" alt="" aria-hidden="true" /></div>
+      <div class="category-item__info">
+        <div class="category-item__separator"></div>
+        <div class="category-item__row1">
+          <div class="category-item__title"><span class="category-item__name">Premium</span></div>
+          <span class="category-item__price">9,20 €</span>
+        </div>
+        <div class="category-item__row2">
+          <span class="category-item__eta">2 min</span>
+          <span class="category-item__pax">
+            <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="XL, 2 minutes away, 8,20 euros">
+      <div class="category-item__image"><img src="../assets/images/vehicle-xl.png" alt="" aria-hidden="true" /></div>
+      <div class="category-item__info">
+        <div class="category-item__separator"></div>
+        <div class="category-item__row1">
+          <div class="category-item__title"><span class="category-item__name">XL</span></div>
+          <span class="category-item__price">8,20 €</span>
+        </div>
+        <div class="category-item__row2">
+          <span class="category-item__eta">2 min</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Order sheet -->
+  <div class="order-sheet">
+    <div class="order-sheet__payment">
+      <div class="order-sheet__payment-group">
+        <img class="order-sheet__card-icon" src="../assets/images/Master_Card.png" alt="Mastercard" width="32" height="20" />
+        <div class="order-sheet__payment-line">
+          <span class="order-sheet__card-number">•••• 5698</span>
+          <img class="order-sheet__chevron" src="../assets/images/chevron_down.png" alt="Change payment method" width="16" height="16" />
+        </div>
+      </div>
+    </div>
+    <div class="order-sheet__buttons">
+      <button class="order-sheet__select-btn" type="button">Select Bolt</button>
+      <button class="order-sheet__schedule-btn" type="button" aria-label="Schedule ride">
+        <img src="../assets/images/scheduling.png" alt="" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+
+</div>

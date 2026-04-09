@@ -1,0 +1,27 @@
+<!-- Status Bar Component -->
+<!-- Transparent overlay: floats over map/content with no background fill -->
+<!-- Usage: place as the first child inside .phone-shell -->
+
+<div class="status-bar" aria-hidden="true">
+  <span class="status-bar__time" id="status-bar-time">9:41</span>
+  <div class="status-bar__icons">
+    <img class="status-bar__signal"  src="../assets/images/Mobile Signal.svg" alt="" />
+    <img class="status-bar__wifi"    src="../assets/images/Wifi.svg"          alt="" />
+    <img class="status-bar__battery" src="../assets/images/Battery.svg"       alt="" />
+  </div>
+</div>
+
+<script>
+(function () {
+  function _pad(n) { return n < 10 ? '0' + n : String(n); }
+  function _tick() {
+    var now = new Date();
+    var h = now.getHours();
+    var m = now.getMinutes();
+    var el = document.getElementById('status-bar-time');
+    if (el) el.textContent = h + ':' + _pad(m);
+  }
+  _tick();
+  setInterval(_tick, 10000); // update every 10 s — precise enough for a clock
+})();
+</script>
