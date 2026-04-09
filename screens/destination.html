@@ -261,10 +261,9 @@
       center: [24.7453, 59.4120]
     };
     var _DEFAULT_PLACES = [
-      { place_name: 'Telliskivi, Tallinn, Estonia',            center: [24.7354, 59.4416] },
-      { place_name: 'Tartu Maantee 101, Tallinn, Estonia',     center: [24.7760, 59.4330] },
-      { place_name: 'Paldiski Maantee 34, Tallinn, Estonia',   center: [24.7155, 59.4365] },
-      { place_name: 'Volta, Tallinn, Estonia',                 center: [24.7290, 59.4428] }
+      { place_name: 'Volta, Tallinn, Estonia',                 center: [24.7290, 59.4428] },
+      { place_name: 'Tartu Maantee 101, Tallinn, Estonia',    center: [24.7760, 59.4330] },
+      { place_name: 'Paldiski Maantee 34, Tallinn, Estonia',  center: [24.7155, 59.4365] }
     ];
 
     // ── History (localStorage) ────────────────────────────────────────────────
@@ -400,7 +399,19 @@
 
     // ── Wire up each input ────────────────────────────────────────────────────
     function setupInput(inputEl, coordKey) {
+      var icon = inputEl.parentElement.querySelector('.route-input__dest-icon');
+      var _blurTimer = null;
+
+      if (icon) {
+        // Re-focus input when icon is tapped, preventing the icon from disappearing
+        icon.addEventListener('mousedown',  function (e) { e.preventDefault(); });
+        icon.addEventListener('touchstart', function (e) { e.preventDefault(); inputEl.focus(); }, { passive: false });
+        icon.addEventListener('click', function () { inputEl.focus(); });
+      }
+
       inputEl.addEventListener('focus', function () {
+        clearTimeout(_blurTimer);
+        if (icon) icon.style.opacity = '1';
         _activeKey = coordKey;
         var q = inputEl.value.trim();
         if (q.length >= 2) {
@@ -418,6 +429,12 @@
         _debounce[coordKey] = setTimeout(function () {
           fetchAndRender(q, coordKey, inputEl);
         }, 250);
+      });
+
+      inputEl.addEventListener('blur', function () {
+        _blurTimer = setTimeout(function () {
+          if (icon) icon.style.opacity = '';
+        }, 150);
       });
 
       inputEl.addEventListener('keydown', function (e) {

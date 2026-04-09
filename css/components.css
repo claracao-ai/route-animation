@@ -991,14 +991,10 @@
   height: 24px;
   display: block;
   flex-shrink: 0;
-  opacity: 0;
-  pointer-events: none;
   color: var(--content-tertiary);
+  opacity: 0;
 }
 
-.route-input__row:focus-within .route-input__dest-icon {
-  opacity: 1;
-}
 
 .route-input__actions {
   display: flex;
