@@ -158,7 +158,7 @@
 
   <!-- Navigation -->
   <nav class="dest-nav">
-    <button class="dest-nav__btn" onclick="history.back()" aria-label="Close">
+    <button class="dest-nav__btn" type="button" aria-label="Close">
       <img src="../assets/images/close.png" width="24" height="24" alt="" aria-hidden="true" />
     </button>
     <h1 class="dest-nav__title">Route</h1>
@@ -255,6 +255,18 @@
     var originEl   = document.getElementById('input-origin');
     var destEl     = document.getElementById('input-destination');
 
+    // ── Default suggestions (shown when history is empty) ─────────────────────
+    var _DEFAULT_ORIGIN = {
+      place_name: 'Vana-Lõuna 15, Tallinn, Estonia',
+      center: [24.7453, 59.4120]
+    };
+    var _DEFAULT_PLACES = [
+      { place_name: 'Telliskivi, Tallinn, Estonia',            center: [24.7354, 59.4416] },
+      { place_name: 'Tartu Maantee 101, Tallinn, Estonia',     center: [24.7760, 59.4330] },
+      { place_name: 'Paldiski Maantee 34, Tallinn, Estonia',   center: [24.7155, 59.4365] },
+      { place_name: 'Volta, Tallinn, Estonia',                 center: [24.7290, 59.4428] }
+    ];
+
     // ── History (localStorage) ────────────────────────────────────────────────
     var HISTORY_KEY = 'route_address_history';
     var MAX_HISTORY = 5;
@@ -344,12 +356,12 @@
       });
     }
 
-    // ── Render history items ──────────────────────────────────────────────────
+    // ── Render history items (or default suggestions when history is empty) ────
     function renderHistory(coordKey, inputEl) {
       var history = getHistory();
-      if (!history.length) { list.innerHTML = ''; return; }
+      var places  = history.length ? history : _DEFAULT_PLACES;
       list.innerHTML = '';
-      history.forEach(function (h) {
+      places.forEach(function (h) {
         var parts     = h.place_name.split(',');
         var primary   = parts[0].trim();
         var secondary = parts.slice(1).join(',').trim();
@@ -431,6 +443,10 @@
       if (prevOrigin) {
         originEl.value = _simplifyAddress(prevOrigin);
         _coords.origin = JSON.parse(sessionStorage.getItem('route_origin_coords') || 'null');
+      } else {
+        // No session — pre-fill pickup with default origin
+        originEl.value = _simplifyAddress(_DEFAULT_ORIGIN.place_name);
+        _coords.origin = _DEFAULT_ORIGIN.center;
       }
       if (prevDest) {
         destEl.value        = _simplifyAddress(prevDest);
@@ -442,11 +458,9 @@
       if (hash === '#origin') {
         originEl.focus();
         originEl.select();
-      } else if (hash === '#destination') {
+      } else {
         destEl.focus();
         destEl.select();
-      } else if (prevOrigin) {
-        destEl.focus();
       }
     })();
   </script>
