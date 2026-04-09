@@ -321,49 +321,6 @@
       });
     }
 
-    // Read ETA from the selected category item (car arrival time, not journey duration)
-    var selectedEtaEl = document.querySelector('.category-item--selected .category-item__eta');
-    var pickupEta     = selectedEtaEl ? (parseInt(selectedEtaEl.textContent, 10) || 5) : 5;
-
-    // Origin marker — new pin component
-    var addressEl = document.querySelector('.address-bar__origin');
-    var address   = addressEl
-      ? addressEl.textContent.trim()
-      : (sessionStorage.getItem('route_origin') || '');
-    var originEl  = _buildOriginPin(address, pickupEta, originVariant);
-    originEl.style.cursor = 'pointer';
-    originEl.addEventListener('click', function () {
-      window.location.href = 'destination.html#origin';
-    });
-    new mapboxgl.Marker({
-      element: originEl,
-      anchor:  'top-left',
-      offset:  _ANCHOR_OFFSET[originVariant] || _ANCHOR_OFFSET['top']
-    })
-      .setLngLat(originCoords)
-      .addTo(map);
-
-    // Destination marker — dropoff pin component
-    var destAddressEl = document.querySelector('.address-bar__destination');
-    var destAddress   = destAddressEl
-      ? destAddressEl.textContent.trim()
-      : (sessionStorage.getItem('route_destination') || '');
-    var destEl = _buildDropoffPin(destAddress, (etaMins || 5) + pickupEta, destVariant);
-    // Store route duration so selectItem can recalculate arrival time on category change
-    var destEtaEl = destEl.querySelector('.dropoff-pin__eta');
-    if (destEtaEl) destEtaEl.dataset.routeMins = etaMins || 5;
-    destEl.style.cursor = 'pointer';
-    destEl.addEventListener('click', function () {
-      window.location.href = 'destination.html#destination';
-    });
-    new mapboxgl.Marker({
-      element: destEl,
-      anchor:  'top-left',
-      offset:  _ANCHOR_OFFSET[destVariant] || _ANCHOR_OFFSET['top']
-    })
-      .setLngLat(destCoords)
-      .addTo(map);
-
     // Two-pass fitBounds for accurate visual centering:
     // Pass 1 (no animation) — establishes the projection so we can convert pin
     //   pixel extents to geographic coordinates.
@@ -402,6 +359,49 @@
     }
     originVariant = _fitVariant(originCoords, originVariant);
     destVariant   = _fitVariant(destCoords,   destVariant);
+
+    // Read ETA from the selected category item (car arrival time, not journey duration)
+    var selectedEtaEl = document.querySelector('.category-item--selected .category-item__eta');
+    var pickupEta     = selectedEtaEl ? (parseInt(selectedEtaEl.textContent, 10) || 5) : 5;
+
+    // Origin marker — built after variants are finalised so class + anchor are correct
+    var addressEl = document.querySelector('.address-bar__origin');
+    var address   = addressEl
+      ? addressEl.textContent.trim()
+      : (sessionStorage.getItem('route_origin') || '');
+    var originEl  = _buildOriginPin(address, pickupEta, originVariant);
+    originEl.style.cursor = 'pointer';
+    originEl.addEventListener('click', function () {
+      window.location.href = 'destination.html#origin';
+    });
+    new mapboxgl.Marker({
+      element: originEl,
+      anchor:  'top-left',
+      offset:  _ANCHOR_OFFSET[originVariant] || _ANCHOR_OFFSET['top']
+    })
+      .setLngLat(originCoords)
+      .addTo(map);
+
+    // Destination marker — built after variants are finalised
+    var destAddressEl = document.querySelector('.address-bar__destination');
+    var destAddress   = destAddressEl
+      ? destAddressEl.textContent.trim()
+      : (sessionStorage.getItem('route_destination') || '');
+    var destEl = _buildDropoffPin(destAddress, (etaMins || 5) + pickupEta, destVariant);
+    // Store route duration so selectItem can recalculate arrival time on category change
+    var destEtaEl = destEl.querySelector('.dropoff-pin__eta');
+    if (destEtaEl) destEtaEl.dataset.routeMins = etaMins || 5;
+    destEl.style.cursor = 'pointer';
+    destEl.addEventListener('click', function () {
+      window.location.href = 'destination.html#destination';
+    });
+    new mapboxgl.Marker({
+      element: destEl,
+      anchor:  'top-left',
+      offset:  _ANCHOR_OFFSET[destVariant] || _ANCHOR_OFFSET['top']
+    })
+      .setLngLat(destCoords)
+      .addTo(map);
 
     // Expand bounds to include each pin's visual footprint at the current projection.
     function _expandForPin(bounds, lngLat, variant) {
