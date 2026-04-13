@@ -491,7 +491,7 @@
     if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
     if (animMarker)  { animMarker.remove(); animMarker = null; }
 
-    var DURATION = 2400;     // ms per full sweep
+    var DURATION = 2000;     // ms per full sweep
     var HALF     = 0.18;     // highlight band half-width (fraction of route)
     var SHINE    = '#27ae60';
 
