@@ -112,7 +112,7 @@
 
         var route = data.routes[0];
         var etaMins = Math.round(route.duration / 60);
-        _renderRoute(route.geometry, originCoords, destCoords, etaMins);
+        _renderRoute(route.geometry, originCoords, destCoords, etaMins, options);
 
         if (options.onSuccess) {
           options.onSuccess({
@@ -249,6 +249,15 @@
    *   left/right — 16px margin
    */
   function _safeArea() {
+    // Allow the page to supply its own safe-area function via ROUTE_REQUEST.options.
+    // Useful when the default FAB-based top calculation is wrong (e.g. when the
+    // re-centre FAB is at the bottom instead of the top of the screen).
+    if (window.ROUTE_REQUEST
+        && window.ROUTE_REQUEST.options
+        && typeof window.ROUTE_REQUEST.options.safeArea === 'function') {
+      return window.ROUTE_REQUEST.options.safeArea();
+    }
+
     var margin      = 16;
     var statusBar   = document.querySelector('.status-bar');
     var fab         = document.querySelector('.fab');
@@ -268,19 +277,20 @@
 
   // Pixel extents from the ellipse centre (anchor point) to each visual edge, per variant.
   var _PIN_EXTENTS = {
-    'top':    { top: 57, bottom: 23, left: 19, right: 135 },
+    'top':    { top: 59, bottom: 21, left: 19, right: 135 },
     'bottom': { top: 18, bottom: 62, left: 19, right: 135 },
     'right':  { top: 18, bottom: 18, left: 18, right: 179 }
   };
 
   // Pixel offsets that align the ellipse centre with the map coordinate, per variant.
   var _ANCHOR_OFFSET = {
-    'top':    [-19, -57],
+    'top':    [-19, -59],
     'bottom': [-19, -18],
     'right':  [-18, -18]
   };
 
-  function _renderRoute(geometry, originCoords, destCoords, etaMins) {
+  function _renderRoute(geometry, originCoords, destCoords, etaMins, options) {
+    options = options || {};
     // Route line
     if (map.getSource(ROUTE_SOURCE)) {
       map.getSource(ROUTE_SOURCE).setData({ type: 'Feature', geometry: geometry });
@@ -364,15 +374,21 @@
     var address   = addressEl
       ? addressEl.textContent.trim()
       : (sessionStorage.getItem('route_origin') || '');
-    var originEl  = _buildOriginPin(address, pickupEta, originVariant);
+    var originEl  = options.buildOriginPin
+      ? options.buildOriginPin(address, pickupEta, originVariant)
+      : _buildOriginPin(address, pickupEta, originVariant);
+    var originMarker = options.originMarker || {};
     originEl.style.cursor = 'pointer';
     originEl.addEventListener('click', function () {
       window.location.href = 'destination.html#origin';
     });
     new mapboxgl.Marker({
       element: originEl,
-      anchor:  'top-left',
-      offset:  _ANCHOR_OFFSET[originVariant] || _ANCHOR_OFFSET['top']
+      anchor:  originMarker.anchor || 'top-left',
+      offset:  (originMarker.offsetByVariant && originMarker.offsetByVariant[originVariant])
+            || originMarker.offset
+            || _ANCHOR_OFFSET[originVariant]
+            || _ANCHOR_OFFSET['top']
     })
       .setLngLat(originCoords)
       .addTo(map);
@@ -382,7 +398,10 @@
     var destAddress   = destAddressEl
       ? destAddressEl.textContent.trim()
       : (sessionStorage.getItem('route_destination') || '');
-    var destEl = _buildDropoffPin(destAddress, (etaMins || 5) + pickupEta, destVariant);
+    var destEl = options.buildDestPin
+      ? options.buildDestPin(destAddress, (etaMins || 5) + pickupEta, destVariant)
+      : _buildDropoffPin(destAddress, (etaMins || 5) + pickupEta, destVariant);
+    var destMarker = options.destMarker || {};
     // Store route duration so selectItem can recalculate arrival time on category change
     var destEtaEl = destEl.querySelector('.dropoff-pin__eta');
     if (destEtaEl) destEtaEl.dataset.routeMins = etaMins || 5;
@@ -392,15 +411,24 @@
     });
     new mapboxgl.Marker({
       element: destEl,
-      anchor:  'top-left',
-      offset:  _ANCHOR_OFFSET[destVariant] || _ANCHOR_OFFSET['top']
+      anchor:  destMarker.anchor || 'top-left',
+      offset:  (destMarker.offsetByVariant && destMarker.offsetByVariant[destVariant])
+            || destMarker.offset
+            || _ANCHOR_OFFSET[destVariant]
+            || _ANCHOR_OFFSET['top']
     })
       .setLngLat(destCoords)
       .addTo(map);
 
     // Expand bounds to include each pin's visual footprint at the current projection.
-    function _expandForPin(bounds, lngLat, variant) {
-      var e  = _PIN_EXTENTS[variant] || _PIN_EXTENTS['top'];
+    var _originExtents = (options.originMarker && options.originMarker.extentsByVariant)
+      ? (options.originMarker.extentsByVariant[originVariant] || null)
+      : (options.originMarker && options.originMarker.extents) || null;
+    var _destExtents = (options.destMarker && options.destMarker.extentsByVariant)
+      ? (options.destMarker.extentsByVariant[destVariant] || null)
+      : (options.destMarker && options.destMarker.extents) || null;
+    function _expandForPin(bounds, lngLat, variant, extentsOverride) {
+      var e  = extentsOverride || _PIN_EXTENTS[variant] || _PIN_EXTENTS['top'];
       var pt = map.project(lngLat);
       [
         [pt.x - e.left,  pt.y - e.top],
@@ -413,8 +441,8 @@
     var visualBounds = new mapboxgl.LngLatBounds(
       routeBounds.getSouthWest(), routeBounds.getNorthEast()
     );
-    _expandForPin(visualBounds, originCoords, originVariant);
-    _expandForPin(visualBounds, destCoords,   destVariant);
+    _expandForPin(visualBounds, originCoords, originVariant, _originExtents);
+    _expandForPin(visualBounds, destCoords,   destVariant,   _destExtents);
 
     // Iteratively verify both pins sit inside the safe area.
     // Each pass: fitBounds (silent) → project pin → if any edge overflows,
@@ -422,8 +450,8 @@
     for (var iter = 0; iter < 4; iter++) {
       map.fitBounds(visualBounds, { padding: sa, maxZoom: 15, animate: false });
       var anyOverflow = false;
-      [[originCoords, originVariant], [destCoords, destVariant]].forEach(function (pair) {
-        var e   = _PIN_EXTENTS[pair[1]] || _PIN_EXTENTS['top'];
+      [[originCoords, originVariant, _originExtents], [destCoords, destVariant, _destExtents]].forEach(function (pair) {
+        var e   = pair[2] || _PIN_EXTENTS[pair[1]] || _PIN_EXTENTS['top'];
         var pt  = map.project(pair[0]);
         var oL  = sa.left            - (pt.x - e.left);
         var oR  = (pt.x + e.right)   - (mapW - sa.right);

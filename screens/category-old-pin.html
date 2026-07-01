@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=375" />
+  <title>Prototype</title>
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/screens.css" />
+  <style>
+    /* Address bar sits below the status bar on this screen */
+    .screen--category-old-pin .address-bar { top: 60px; }
+    /* Re-centre FAB — bottom-right of map, just above the bottom sheet */
+    .screen--category-old-pin .screen--category__fab-recentre {
+      top: auto;
+      bottom: 430px; /* 418px sheet height + 12px gap */
+    }
+
+    /* ── Refined old pin ────────────────────────────────────────────── */
+    /* Wrapper: unified drop-shadow over bubble + pointer              */
+    .pin__card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.16));
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Remove per-element shadow — wrapper owns it now */
+    .pin__bubble { box-shadow: none; }
+
+    /* CSS pointer — flows as flex child */
+    .pin__pointer {
+      position: static;
+      left: auto;
+      top: auto;
+      transform: none;
+      background: var(--color-brand);
+      clip-path: path('M20 0L0 0C4.814 0 7.686 3.456 9.204 6.351C9.521 6.956 10.479 6.956 10.796 6.351C12.314 3.456 15.186 0 20 0Z');
+    }
+    .pin--dropoff .pin__pointer { background: var(--map-journey-points-end-bg-primary); }
+
+    /* Pull ellipse up so visible circle edge (y≈7.5 in SVG) aligns with pointer tip */
+    .pin__ellipse { top: -8px; }
+    .pin__target  { top: 7px; } /* circle centre at y=10 in pillar → target top = 10-3 */
+
+    /* ── Direction variants ─────────────────────────────────────────── */
+    .pin--top   { flex-direction: column-reverse; }
+    .pin--right { flex-direction: row; }
+    .pin--left  { flex-direction: row-reverse; }
+
+    .pin--top .pin__card    { flex-direction: column-reverse; }
+    .pin--top .pin__pointer { transform: rotate(180deg); }
+
+    .pin--right .pin__card  { flex-direction: row; align-items: center; }
+    .pin--right .pin__pointer {
+      width: 7px; height: 20px;
+      clip-path: path('M0 0 L0 20 C0 15.186 3.456 12.314 6.351 10.796 C6.956 10.479 6.956 9.521 6.351 9.204 C3.456 7.686 0 4.814 0 0 Z');
+    }
+    .pin--left .pin__card   { flex-direction: row-reverse; align-items: center; }
+    .pin--left .pin__pointer {
+      width: 7px; height: 20px;
+      clip-path: path('M7 20 L7 0 C7 4.814 3.544 7.686 0.649 9.204 C0.044 9.521 0.044 10.479 0.649 10.796 C3.544 12.314 7 15.186 7 20 Z');
+    }
+
+    /* top: -8px base rule works for both bottom and top variants — no separate override needed */
+
+    /* Horizontal: pillar stretches to card height, ellipse/target centred */
+    .pin--right .pin__pillar,
+    .pin--left .pin__pillar  { width: 36px; height: auto; align-self: stretch; }
+    .pin--right .pin__ellipse, .pin--left .pin__ellipse,
+    .pin--right .pin__target,  .pin--left .pin__target  {
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body class="screen screen--category screen--category-old-pin">
+<div class="phone-shell" style="display:flex;flex-direction:column;">
+
+  <!-- ── Dynamic Island ──────────────────────────────────────────── -->
+  <div class="dynamic-island" aria-hidden="true"></div>
+
+  <!-- ── Status bar ─────────────────────────────────────────────── -->
+  <div class="status-bar" aria-hidden="true">
+    <span class="status-bar__time" id="status-bar-time">9:41</span>
+    <div class="status-bar__icons">
+      <img class="status-bar__signal"  src="../assets/images/Mobile Signal.svg" alt="" />
+      <img class="status-bar__wifi"    src="../assets/images/Wifi.svg"          alt="" />
+      <img class="status-bar__battery" src="../assets/images/Battery.svg"       alt="" />
+    </div>
+  </div>
+
+  <!-- ── Map area ───────────────────────────────────────────────── -->
+  <div class="map-area">
+    <div id="map"></div>
+
+    <!-- Address bar -->
+    <div class="address-bar" role="button" aria-label="Edit route">
+      <button class="address-bar__icon-btn" aria-label="Close" onclick="window.location.href='destination.html'">
+        <img src="../assets/images/close.png" alt="" aria-hidden="true" />
+      </button>
+      <div class="address-bar__route">
+        <span class="address-bar__origin" id="address-bar-origin">Vana-Lõuna 15</span>
+        <img class="address-bar__arrow" src="../assets/images/arrow_micro_right.png" alt="" aria-hidden="true" />
+        <span class="address-bar__destination" id="address-bar-destination">Gonsiori 125</span>
+      </div>
+      <button class="address-bar__icon-btn" aria-label="Add stop">
+        <img src="../assets/images/add.png" alt="" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+
+  <!-- ── FAB — re-centre map ────────────────────────────────────── -->
+  <button class="fab screen--category__fab-recentre" type="button" aria-label="Centre map" onclick="window.mapsRecentre && window.mapsRecentre()">
+    <img class="fab__icon" src="../assets/images/my_location_ios (outline).svg" alt="" aria-hidden="true" />
+  </button>
+
+  <!-- ── Bottom sheet ───────────────────────────────────────────── -->
+  <div class="bottom-sheet">
+
+    <div class="bottom-sheet__handle-wrap">
+      <div class="bottom-sheet__handle"></div>
+    </div>
+
+    <div class="category-list" role="radiogroup" aria-label="Select ride category">
+
+      <div class="category-item category-item--selected" role="radio" aria-checked="true" tabindex="0" aria-label="Bolt, 5 minutes away, 4 seats, 5,50 euros">
+        <div class="category-item__image"><img src="../assets/images/vehicle-standard.png" alt="" aria-hidden="true" /></div>
+        <div class="category-item__info">
+          <div class="category-item__row1">
+            <div class="category-item__title"><span class="category-item__name">Bolt</span></div>
+            <span class="category-item__price">5,50 €</span>
+          </div>
+          <div class="category-item__row2">
+            <span class="category-item__eta">4 min</span>
+            <span class="category-item__pax">
+              <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="Basic with surge pricing, 3 minutes away, 4 seats, 4,20 euros">
+        <div class="category-item__image"><img src="../assets/images/vehicle-hatchback.png" alt="" aria-hidden="true" /></div>
+        <div class="category-item__info">
+          <div class="category-item__separator"></div>
+          <div class="category-item__row1">
+            <div class="category-item__title">
+              <span class="category-item__name">Basic</span>
+              <img class="category-item__surge" src="../assets/images/surge_original.png" alt="Surge pricing active" />
+            </div>
+            <span class="category-item__price">4,20 €</span>
+          </div>
+          <div class="category-item__row2">
+            <span class="category-item__eta">2 min</span>
+            <span class="category-item__pax">
+              <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="Comfort, 2 minutes away, 4 seats, 7,20 euros">
+        <div class="category-item__image"><img src="../assets/images/vehicle-comfort.png" alt="" aria-hidden="true" /></div>
+        <div class="category-item__info">
+          <div class="category-item__separator"></div>
+          <div class="category-item__row1">
+            <div class="category-item__title"><span class="category-item__name">Comfort</span></div>
+            <span class="category-item__price">7,20 €</span>
+          </div>
+          <div class="category-item__row2">
+            <span class="category-item__eta">2 min</span>
+            <span class="category-item__pax">
+              <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="Premium, 2 minutes away, 4 seats, 9,20 euros">
+        <div class="category-item__image"><img src="../assets/images/vehicle-premium.png" alt="" aria-hidden="true" /></div>
+        <div class="category-item__info">
+          <div class="category-item__separator"></div>
+          <div class="category-item__row1">
+            <div class="category-item__title"><span class="category-item__name">Premium</span></div>
+            <span class="category-item__price">9,20 €</span>
+          </div>
+          <div class="category-item__row2">
+            <span class="category-item__eta">5 min</span>
+            <span class="category-item__pax">
+              <img class="category-item__pax-icon" src="../assets/images/user (outline).png" alt="" aria-hidden="true" /><span>4</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-item" role="radio" aria-checked="false" tabindex="0" aria-label="XL, 2 minutes away, 8,20 euros">
+        <div class="category-item__image"><img src="../assets/images/vehicle-xl.png" alt="" aria-hidden="true" /></div>
+        <div class="category-item__info">
+          <div class="category-item__separator"></div>
+          <div class="category-item__row1">
+            <div class="category-item__title"><span class="category-item__name">XL</span></div>
+            <span class="category-item__price">8,20 €</span>
+          </div>
+          <div class="category-item__row2">
+            <span class="category-item__eta">6 min</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="order-sheet">
+      <div class="order-sheet__payment">
+        <div class="order-sheet__payment-group">
+          <img class="order-sheet__card-icon" src="../assets/images/Master_Card.png" alt="Mastercard" width="32" height="20" />
+          <div class="order-sheet__payment-line">
+            <span class="order-sheet__card-number">•••• 5698</span>
+            <img class="order-sheet__chevron" src="../assets/images/chevron_down.png" alt="Change payment method" width="16" height="16" />
+          </div>
+        </div>
+      </div>
+      <div class="order-sheet__buttons">
+        <button class="order-sheet__select-btn" type="button">Select Bolt</button>
+        <button class="order-sheet__schedule-btn" type="button" aria-label="Schedule ride">
+          <img src="../assets/images/scheduling.png" alt="" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /bottom-sheet -->
+
+  </div><!-- /phone-shell -->
+
+  <script>
+  (function () {
+    function _pad(n) { return n < 10 ? '0' + n : String(n); }
+    function _tick() {
+      var now = new Date();
+      var el = document.getElementById('status-bar-time');
+      if (el) el.textContent = now.getHours() + ':' + _pad(now.getMinutes());
+    }
+    _tick();
+    setInterval(_tick, 10000);
+  })();
+  </script>
+
+  <script>
+  (function () {
+    var SHEET_MS   = 600;
+    var MAP_MS     = 1100;
+    var ORDER_MS   = 420;
+    var MAX_WAIT   = 500;
+
+    var sheet         = document.querySelector('.bottom-sheet');
+    var routeReady    = false;
+    var entranceStart = null;
+
+    function startEntrance() {
+      if (entranceStart) return;
+      entranceStart = Date.now();
+      sheet.classList.add('is-entered');
+      if (routeReady && window.mapsRecentre) window.mapsRecentre(MAP_MS);
+      setTimeout(function () {
+        sheet.classList.add('order-entered');
+      }, MAP_MS - ORDER_MS);
+    }
+
+    document.addEventListener('mapRouteReady', function () {
+      routeReady = true;
+      if (entranceStart) {
+        var remaining = Math.max(200, MAP_MS - (Date.now() - entranceStart));
+        if (window.mapsRecentre) window.mapsRecentre(remaining);
+      } else {
+        startEntrance();
+      }
+    });
+
+    setTimeout(function () {
+      if (!entranceStart) startEntrance();
+    }, MAX_WAIT);
+  })();
+  </script>
+
+  <script>
+  (function () {
+    var origin = sessionStorage.getItem('route_origin') || 'Vana-Lõuna 15';
+    var dest   = sessionStorage.getItem('route_destination') || 'Gonsiori 125';
+    // Strip city/country — keep street name only (first comma-segment)
+    function _short(s) { return s.split(',')[0].trim(); }
+    document.getElementById('address-bar-origin').textContent      = _short(origin);
+    document.getElementById('address-bar-destination').textContent = _short(dest);
+  })();
+  </script>
+  <script src="../js/config.js"></script>
+  <script>
+  // Refined old pin builder
+  (function () {
+    function _img(cls, src) {
+      var el = document.createElement('img');
+      el.className = cls;
+      el.src = src;
+      el.alt = '';
+      el.setAttribute('aria-hidden', 'true');
+      return el;
+    }
+
+    function _buildOldPin(labelText, valueText, isDropoff, variant) {
+      variant = variant || 'bottom';
+      var isHorizontal = variant === 'right' || variant === 'left';
+
+      var pin = document.createElement('div');
+      pin.className = 'pin'
+        + (isDropoff        ? ' pin--dropoff'      : '')
+        + (variant !== 'bottom' ? ' pin--' + variant : '');
+      // Vertical variants: force 90px so ellipse always centres at x=45
+      if (!isHorizontal) pin.style.width = '90px';
+
+      // Card wraps bubble + pointer so drop-shadow follows the combined shape
+      var card = document.createElement('div');
+      card.className = 'pin__card';
+      card.style.width = '90px'; // fixes pointer centre for both vertical and horizontal
+
+      var bubble = document.createElement('div');
+      bubble.className = 'pin__bubble';
+
+      var labels = document.createElement('div');
+      labels.className = 'pin__labels';
+
+      var label = document.createElement('span');
+      label.className = 'pin__label';
+      label.textContent = labelText;
+
+      var value = document.createElement('span');
+      value.className = 'pin__value';
+      value.textContent = valueText;
+
+      labels.appendChild(label);
+      labels.appendChild(value);
+      bubble.appendChild(labels);
+
+      var pointer = document.createElement('div');
+      pointer.className = 'pin__pointer';
+      pointer.setAttribute('aria-hidden', 'true');
+
+      card.appendChild(bubble);
+      card.appendChild(pointer);
+      pin.appendChild(card);
+
+      var pillar = document.createElement('div');
+      pillar.className = 'pin__pillar';
+      pillar.appendChild(_img('pin__ellipse', isDropoff
+        ? '../assets/images/pin-ellipse-dark.svg'
+        : '../assets/images/pin-ellipse.svg'));
+      pillar.appendChild(_img('pin__target', '../assets/images/pin-target.svg'));
+      pin.appendChild(pillar);
+
+      return pin;
+    }
+
+    // Per-variant circle centre offsets and visual extents.
+    // ellipse SVG: 36×36, circle visible from y≈7.5 to y≈28.5 → centre at y=18.
+    // With top:-8px on .pin__ellipse, circle centre sits at y=10 in pillar coords.
+    //
+    // Vertical variants (pin width 90px, card 55px tall = bubble(48)+pointer(7)):
+    //   bottom: circle centre at card(55)+10 = 65px below pin top
+    //   top:    column-reverse — pillar at pin top, circle centre at y=10 from pin top
+    //
+    // Horizontal variants (card 90px wide, pillar 36px wide, centred at 50%/50%):
+    //   right:  circle centre at x=108 (90 card + 18 half-pillar), y=24 (card-height/2)
+    //   left:   circle centre at x=18  (18 half-pillar),            y=24
+    // circle centre is at y=10 in pillar coords (ellipse top:-8px, SVG centre at 18px → 18-8=10)
+    // bottom: card(55) + 10 = 65px below pin top;  top: pillar-first → 10px below pin top
+    var OLD_PIN_OFFSET_BY_VARIANT = {
+      'bottom': [-45,  -65],
+      'top':    [-45,  -10],
+      'right':  [-108, -24],
+      'left':   [-18,  -24]
+    };
+    var OLD_PIN_EXTENTS_BY_VARIANT = {
+      'bottom': { top: 65, bottom: 11, left: 45,  right: 45  },
+      'top':    { top: 10, bottom: 65, left: 45,  right: 45  },
+      'right':  { top: 24, bottom: 24, left: 108, right: 18  },
+      'left':   { top: 24, bottom: 24, left: 18,  right: 108 }
+    };
+
+    var _origin      = sessionStorage.getItem('route_origin')      || 'Vana-Lõuna 15, Tallinn';
+    var _destination = sessionStorage.getItem('route_destination') || 'Gonsiori 125, Tallinn';
+    var _originCoords = JSON.parse(sessionStorage.getItem('route_origin_coords')      || 'null');
+    var _destCoords   = JSON.parse(sessionStorage.getItem('route_destination_coords') || 'null');
+
+    window.ROUTE_REQUEST = {
+      origin:      _originCoords || _origin,
+      destination: _destCoords   || _destination,
+      options: {
+        // The re-centre FAB is at the bottom on this screen, not the top.
+        // Measure the address bar directly so fitBounds pads correctly.
+        safeArea: function () {
+          var margin      = 16;
+          var addressBar  = document.querySelector('.address-bar');
+          var bottomSheet = document.querySelector('.bottom-sheet');
+          var top    = addressBar
+            ? addressBar.offsetTop + addressBar.offsetHeight + margin
+            : 96 + margin; // fallback: status-bar (44) + address-bar (~52)
+          var bottom = (bottomSheet ? bottomSheet.offsetHeight : 418) + margin;
+          return { top: top, bottom: bottom, left: margin, right: margin };
+        },
+        buildOriginPin: function (address, etaMins, variant) {
+          return _buildOldPin('Pickup', etaMins + ' min', false, variant);
+        },
+        buildDestPin: function (address, etaMins, variant) {
+          var arrival = new Date(Date.now() + etaMins * 60 * 1000);
+          var hh = arrival.getHours();
+          var mm = arrival.getMinutes();
+          return _buildOldPin('Dropoff', hh + ':' + (mm < 10 ? '0' + mm : String(mm)), true, variant);
+        },
+        originMarker: { anchor: 'top-left', offsetByVariant: OLD_PIN_OFFSET_BY_VARIANT, extentsByVariant: OLD_PIN_EXTENTS_BY_VARIANT },
+        destMarker:   { anchor: 'top-left', offsetByVariant: OLD_PIN_OFFSET_BY_VARIANT, extentsByVariant: OLD_PIN_EXTENTS_BY_VARIANT },
+        onSuccess: function (result) {
+          var distKm  = (result.distance / 1000).toFixed(1);
+          var durMins = Math.round(result.duration / 60);
+          console.log('Route loaded:', distKm + ' km,', durMins + ' min');
+        }
+      }
+    };
+  })();
+  </script>
+  <script src="../js/maps.js"></script>
+  <script src="../js/main.js"></script>
+
+</body>
+</html>

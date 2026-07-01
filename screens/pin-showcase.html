@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=375" />
+  <title>Pin Showcase</title>
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    body {
+      background: #e8ede9;
+      font-family: var(--font-family);
+      padding: 40px 24px;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: var(--type-body-xs-size);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--content-secondary);
+      margin: 0 0 24px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .row {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .cell {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .cell__label {
+      font-size: var(--type-body-xs-size);
+      color: var(--content-tertiary);
+      font-weight: var(--font-weight-regular);
+    }
+
+    /* Give --right variants room so the card doesn't get clipped */
+    .cell--right {
+      min-width: 220px;
+    }
+
+    /* Wrapper — unified shadow over bubble + pointer */
+    .pin__card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.16));
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Remove per-element shadow now that wrapper owns it */
+    .pin__bubble {
+      box-shadow: none;
+    }
+
+    /* CSS pointer — flows as flex child, no longer absolutely positioned */
+    .pin__pointer {
+      position: static;
+      left: auto;
+      top: auto;
+      transform: none;
+      background: var(--color-brand);
+      clip-path: path('M20 0L0 0C4.814 0 7.686 3.456 9.204 6.351C9.521 6.956 10.479 6.956 10.796 6.351C12.314 3.456 15.186 0 20 0Z');
+    }
+
+    .pin--dropoff .pin__pointer {
+      background: var(--map-journey-points-end-bg-primary);
+    }
+
+    .pin__ellipse {
+      top: -8px; /* pull up so visible circle edge (y≈7.5 in SVG) aligns with pointer tip */
+    }
+
+    .pin__target {
+      top: 7px; /* circle centre at y=10 in pillar → target top = 10-3 */
+    }
+
+    h3 {
+      font-size: var(--type-body-xs-size);
+      font-weight: var(--font-weight-regular);
+      color: var(--content-tertiary);
+      margin: 0 0 16px;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+
+    .subsection {
+      margin-bottom: 32px;
+    }
+
+    /* Direction variants — pin outer flex direction moves pillar to the pointer side */
+    .pin--top   { flex-direction: column-reverse; }
+    .pin--right { flex-direction: row; }
+    .pin--left  { flex-direction: row-reverse; }
+
+    /* Direction variants — card inner layout */
+    .pin--top .pin__card    { flex-direction: column-reverse; }
+    .pin--top .pin__pointer { transform: rotate(180deg); }
+
+    .pin--right .pin__card  { flex-direction: row; align-items: center; }
+    .pin--right .pin__pointer {
+      width: 7px;
+      height: 20px;
+      clip-path: path('M0 0 L0 20 C0 15.186 3.456 12.314 6.351 10.796 C6.956 10.479 6.956 9.521 6.351 9.204 C3.456 7.686 0 4.814 0 0 Z');
+    }
+
+    .pin--left .pin__card   { flex-direction: row-reverse; align-items: center; }
+    .pin--left .pin__pointer {
+      width: 7px;
+      height: 20px;
+      clip-path: path('M7 20 L7 0 C7 4.814 3.544 7.686 0.649 9.204 C0.044 9.521 0.044 10.479 0.649 10.796 C3.544 12.314 7 15.186 7 20 Z');
+    }
+
+    /* Horizontal: pillar stretches to card height, ellipse/target centred vertically */
+    .pin--right .pin__pillar,
+    .pin--left .pin__pillar {
+      width: 36px;
+      height: auto;
+      align-self: stretch;
+    }
+
+    .pin--right .pin__ellipse,
+    .pin--left .pin__ellipse,
+    .pin--right .pin__target,
+    .pin--left .pin__target {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* CSS pointer — clip-path */
+    .pickup-pin__pointer,
+    .dropoff-pin__pointer {
+      background: var(--color-brand);
+      clip-path: path('M20 0L0 0C4.814 0 7.686 3.456 9.204 6.351C9.521 6.956 10.479 6.956 10.796 6.351C12.314 3.456 15.186 0 20 0Z');
+    }
+
+    .dropoff-pin__pointer {
+      background: var(--map-journey-points-end-bg-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Old pin ───────────────────────────────────────────────────── -->
+  <div class="section">
+    <h2>Old pin</h2>
+
+    <!-- Pickup -->
+    <div class="subsection">
+      <h3>Pickup</h3>
+      <div class="row">
+
+        <div class="cell">
+          <div class="pin" aria-label="Pickup — 5 min">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Pickup</span><span class="pin__value">5 min</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">bottom</span>
+        </div>
+
+        <div class="cell">
+          <div class="pin pin--top" aria-label="Pickup — 5 min">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Pickup</span><span class="pin__value">5 min</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">top</span>
+        </div>
+
+        <div class="cell">
+          <div class="pin pin--right" aria-label="Pickup — 5 min">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Pickup</span><span class="pin__value">5 min</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">right</span>
+        </div>
+
+        <div class="cell">
+          <div class="pin pin--left" aria-label="Pickup — 5 min">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Pickup</span><span class="pin__value">5 min</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">left</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Dropoff -->
+    <div class="subsection">
+      <h3>Dropoff</h3>
+      <div class="row">
+
+        <div class="cell">
+          <div class="pin pin--dropoff" aria-label="Dropoff — Gonsiori 125">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Dropoff</span><span class="pin__value">10:24</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">bottom</span>
+        </div>
+
+        <div class="cell">
+          <div class="pin pin--dropoff pin--top" aria-label="Dropoff — Gonsiori 125">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Dropoff</span><span class="pin__value">10:24</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">top</span>
+        </div>
+
+        <div class="cell">
+          <div class="pin pin--dropoff pin--right" aria-label="Dropoff — Gonsiori 125">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Dropoff</span><span class="pin__value">10:24</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">right</span>
+        </div>
+
+        <div class="cell">
+          <div class="pin pin--dropoff pin--left" aria-label="Dropoff — Gonsiori 125">
+            <div class="pin__card">
+              <div class="pin__bubble"><div class="pin__labels"><span class="pin__label">Dropoff</span><span class="pin__value">10:24</span></div></div>
+              <div class="pin__pointer" aria-hidden="true"></div>
+            </div>
+            <div class="pin__pillar">
+              <img class="pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+              <img class="pin__target"  src="../assets/images/pin-target.svg"       alt="" aria-hidden="true" />
+            </div>
+          </div>
+          <span class="cell__label">left</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Pickup pin ──────────────────────────────────────────────────── -->
+  <div class="section">
+    <h2>Pickup pin</h2>
+    <div class="row">
+
+      <!-- top (default) -->
+      <div class="cell">
+        <div class="pickup-pin">
+          <div class="pickup-pin__card">
+            <div class="pickup-pin__eta">
+              <span class="pickup-pin__eta-value">4</span>
+              <span class="pickup-pin__eta-unit">min</span>
+            </div>
+            <div class="pickup-pin__location">
+              <span class="pickup-pin__location-text">Vana-Lõuna 15</span>
+              <img class="pickup-pin__chevron" src="../assets/images/chevron-right-pickup.svg" alt="" aria-hidden="true" />
+            </div>
+            <div class="pickup-pin__pointer" aria-hidden="true"></div>
+          </div>
+          <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+          <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+        </div>
+        <span class="cell__label">top (default)</span>
+      </div>
+
+      <!-- bottom -->
+      <div class="cell">
+        <div class="pickup-pin pickup-pin--bottom">
+          <div class="pickup-pin__card">
+            <div class="pickup-pin__eta">
+              <span class="pickup-pin__eta-value">4</span>
+              <span class="pickup-pin__eta-unit">min</span>
+            </div>
+            <div class="pickup-pin__location">
+              <span class="pickup-pin__location-text">Vana-Lõuna 15</span>
+              <img class="pickup-pin__chevron" src="../assets/images/chevron-right-pickup.svg" alt="" aria-hidden="true" />
+            </div>
+            <div class="pickup-pin__pointer" aria-hidden="true"></div>
+          </div>
+          <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+          <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+        </div>
+        <span class="cell__label">bottom</span>
+      </div>
+
+      <!-- right -->
+      <div class="cell cell--right">
+        <div class="pickup-pin pickup-pin--right">
+          <div class="pickup-pin__card">
+            <div class="pickup-pin__eta">
+              <span class="pickup-pin__eta-value">4</span>
+              <span class="pickup-pin__eta-unit">min</span>
+            </div>
+            <div class="pickup-pin__location">
+              <span class="pickup-pin__location-text">Vana-Lõuna 15</span>
+              <img class="pickup-pin__chevron" src="../assets/images/chevron-right-pickup.svg" alt="" aria-hidden="true" />
+            </div>
+            <div class="pickup-pin__pointer" aria-hidden="true"></div>
+          </div>
+          <img class="pickup-pin__ellipse" src="../assets/images/pin-ellipse.svg" alt="" aria-hidden="true" />
+          <img class="pickup-pin__target"  src="../assets/images/pin-target.svg"  alt="" aria-hidden="true" />
+        </div>
+        <span class="cell__label">right</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Dropoff pin ─────────────────────────────────────────────────── -->
+  <div class="section">
+    <h2>Dropoff pin</h2>
+    <div class="row">
+
+      <!-- top (default) -->
+      <div class="cell">
+        <div class="dropoff-pin">
+          <div class="dropoff-pin__card">
+            <div class="dropoff-pin__eta">
+              <span class="dropoff-pin__eta-value">10:24</span>
+            </div>
+            <div class="dropoff-pin__location">
+              <span class="dropoff-pin__location-text">Gonsiori 125</span>
+              <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+            </div>
+            <div class="dropoff-pin__pointer" aria-hidden="true"></div>
+          </div>
+          <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+          <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"        alt="" aria-hidden="true" />
+        </div>
+        <span class="cell__label">top (default)</span>
+      </div>
+
+      <!-- bottom -->
+      <div class="cell">
+        <div class="dropoff-pin dropoff-pin--bottom">
+          <div class="dropoff-pin__card">
+            <div class="dropoff-pin__eta">
+              <span class="dropoff-pin__eta-value">10:24</span>
+            </div>
+            <div class="dropoff-pin__location">
+              <span class="dropoff-pin__location-text">Gonsiori 125</span>
+              <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+            </div>
+            <div class="dropoff-pin__pointer" aria-hidden="true"></div>
+          </div>
+          <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+          <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"        alt="" aria-hidden="true" />
+        </div>
+        <span class="cell__label">bottom</span>
+      </div>
+
+      <!-- right -->
+      <div class="cell cell--right">
+        <div class="dropoff-pin dropoff-pin--right">
+          <div class="dropoff-pin__card">
+            <div class="dropoff-pin__eta">
+              <span class="dropoff-pin__eta-value">10:24</span>
+            </div>
+            <div class="dropoff-pin__location">
+              <span class="dropoff-pin__location-text">Gonsiori 125</span>
+              <img class="dropoff-pin__chevron" src="../assets/images/chevron-right-dropoff.svg" alt="" aria-hidden="true" />
+            </div>
+            <div class="dropoff-pin__pointer" aria-hidden="true"></div>
+          </div>
+          <img class="dropoff-pin__ellipse" src="../assets/images/pin-ellipse-dark.svg" alt="" aria-hidden="true" />
+          <img class="dropoff-pin__target"  src="../assets/images/pin-target.svg"        alt="" aria-hidden="true" />
+        </div>
+        <span class="cell__label">right</span>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

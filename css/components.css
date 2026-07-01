@@ -428,7 +428,7 @@
 }
 
 .pin--dropoff .pin__bubble {
-  background: var(--color-primary);           /* destination variant */
+  background: var(--map-journey-points-end-bg-primary); /* #0c2c1c — destination dark green */
 }
 
 .pin__labels {
@@ -504,7 +504,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 17px;
+  top: 19px;
   width: 6px;
   height: 6px;
   display: block;
@@ -651,7 +651,7 @@
 /* White centre dot: centred on the ellipse circle (cy=16 in SVG → absolute centre 57px) */
 .pickup-pin__target {
   position: absolute;
-  top: 54px;  /* 57px circle centre − 3px half-height */
+  top: 56px;  /* 59px circle centre − 3px half-height */
   left: 16px; /* 19px circle centre − 3px half-width */
   width: 6px;
   height: 6px;
@@ -780,7 +780,7 @@
 
 .dropoff-pin__target {
   position: absolute;
-  top: 54px;
+  top: 56px;
   left: 16px;
   width: 6px;
   height: 6px;
@@ -800,7 +800,7 @@
 
 /* — pickup --bottom */
 .pickup-pin--bottom .pickup-pin__ellipse { top: 0; }
-.pickup-pin--bottom .pickup-pin__target  { top: 13px; }
+.pickup-pin--bottom .pickup-pin__target  { top: 15px; }
 .pickup-pin--bottom .pickup-pin__card    { top: 36px; }
 .pickup-pin--bottom .pickup-pin__pointer { top: 0; transform: rotate(180deg); }
 .pickup-pin--bottom .pickup-pin__eta,
@@ -809,13 +809,13 @@
 /* — pickup --right  (card right, ellipse left) */
 .pickup-pin--right { width: 192px; height: 36px; }
 .pickup-pin--right .pickup-pin__ellipse { top: 0;    left: 0; }
-.pickup-pin--right .pickup-pin__target  { top: 13px; left: 15px; }
+.pickup-pin--right .pickup-pin__target  { top: 15px; left: 15px; }
 .pickup-pin--right .pickup-pin__card    { top: 1px;  left: 43px; height: 34px; }
 .pickup-pin--right .pickup-pin__pointer { top: 14px; left: -13px; transform: rotate(90deg); }
 
 /* — dropoff --bottom */
 .dropoff-pin--bottom .dropoff-pin__ellipse { top: 0; }
-.dropoff-pin--bottom .dropoff-pin__target  { top: 13px; }
+.dropoff-pin--bottom .dropoff-pin__target  { top: 15px; }
 .dropoff-pin--bottom .dropoff-pin__card    { top: 36px; }
 .dropoff-pin--bottom .dropoff-pin__pointer { top: 0; transform: rotate(180deg); }
 .dropoff-pin--bottom .dropoff-pin__eta,
@@ -824,7 +824,7 @@
 /* — dropoff --right */
 .dropoff-pin--right { width: 192px; height: 36px; }
 .dropoff-pin--right .dropoff-pin__ellipse { top: 0;    left: 0; }
-.dropoff-pin--right .dropoff-pin__target  { top: 13px; left: 15px; }
+.dropoff-pin--right .dropoff-pin__target  { top: 15px; left: 15px; }
 .dropoff-pin--right .dropoff-pin__card    { top: 1px;  left: 43px; height: 34px; }
 .dropoff-pin--right .dropoff-pin__pointer { top: 14px; left: -13px; transform: rotate(90deg); }
 
